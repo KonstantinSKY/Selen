@@ -425,9 +425,16 @@ when using this method, you do not need to click on the element and clear it, th
 
 ### `xpath_query()` - Absolute XPATH of WebElements
 
-This method gets absolute xpath of WebElement. The found xpath automatically performs a reverse check for the search for the element using exactly this xpath.
+This method return absolute xpath of WebElement. The found xpath automatically performs a reverse check for the search for the element using exactly this xpath.
 This method is always final and after it the chain of methods cannot continue
+```python
+se.Find(NAME, "email").xpath_query().out("XPath:")
+# Result
+"""
+XPath: /html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/form[1]/div[1]/div[1]/input[1]
+"""
 
+```
 ### `count()` - Numbers of found Elements
 
     `count([number: int])`
@@ -447,6 +454,8 @@ This method checks if the element contains the specified attribute
  
 
 ### `all_attrs()` - Get all attributes of WebElement
+
+Returns all Element Attributes in dictionary format
 
 ## Advanced Methods
 
@@ -518,9 +527,13 @@ Images statistic:
 }
 '''
 ```
+## Setting of the project, setting variable
 
 
+### `se.print()` print to STDOUT any text if se.ok_print = "YES"
+- do not confuse with usually print
 
+### `assertion()` - break work if se.ok_assertion = "NO"
 
 ### `IS` - return boolean, as result of checking element
 
