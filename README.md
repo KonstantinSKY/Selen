@@ -75,8 +75,9 @@ se.Find(class_locator)
 ```
 ## Principles and rules of the Selen using
 
-### `Find()` and `find()` are differents method
-Methods `Find` with Capital first letter used if it calls first after the WebDriver (for All WEB page elements) and the lowercase method `find` is used when calling after another already found element.
+### `Find()` and `find()` are different methods
+Method `Find` (with Capital first letter) used if it calls first after the WebDriver (for All WEB page elements). 
+The lowercase method `find` is used when calling after another already found element.
 There are several more methods that work in the same principle. But more on that later.
 
 `se.Find(locator(s),[locators(s), ... locators(s])`
