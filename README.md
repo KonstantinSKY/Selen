@@ -392,8 +392,20 @@ In this case `action=True` - a click through the Selenium action.chain
 ### `type()` - inserts text into the selected WebWlement
     
     `type("Text")`
-Examples:
+Example: Check if the Tag "h2" contains text "Log in" 
 ```python
+se.Wait(TAG, "h2").text("Log in")
+
+# Result:
+"""
+Checked: Text "Log in" at element: "/html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/h2[1]" ... OK
+"""
+# Or we can Check and Click
+se.Wait(TAG, "h2").text("Log in").click()
+# Result:
+"""
+
+"""
 
 ```
 
