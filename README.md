@@ -127,7 +127,7 @@ se.Find(locators)
 
 #or Combined addition of locators  
 se.Find(locators, xpath_locator, (TAG, "a"))
-se.Find((Tag, "a"), xpath_locators, locators)
+se.Find((TAG, "a"), xpath_locators, locators)
 # ! Any combinations as You wish
 ```
 ### Assigning an element or elements to a variables 
