@@ -70,8 +70,8 @@ se.Find(CLASS, "Login_submit_wrapper__2-PYe")
 xpath_locator = (XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
 class_locator = (CLASS, "Login_submit_wrapper__2-PYe")
 
-se.Find_element(xpath_locator)
-se.Find_element(class_locator)
+se.Find(xpath_locator)
+se.Find(class_locator)
 ```
 ## Principles and rules of the Selen using
 
