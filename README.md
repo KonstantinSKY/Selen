@@ -392,21 +392,46 @@ In this case `action=True` - a click through the Selenium action.chain
 ### `type()` - inserts text into the selected WebWlement
     
     `type("Text")`
-Example: Check if the Tag "h2" contains text "Log in" 
+Example: Checking if the Tag "h2" contains text "Log in" 
 ```python
 se.Wait(TAG, "h2").text("Log in")
 
 # Result:
 """
+Wait Element found ('tag name', 'h2')  ... OK
 Checked: Text "Log in" at element: "/html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/h2[1]" ... OK
 """
 # Or we can Check and Click
 se.Wait(TAG, "h2").text("Log in").click()
 # Result:
 """
-
+Wait Element found ('tag name', 'h2')  ... OK
+Checked: Text "Log in" at element: "/html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/h2[1]" ... OK
+Clicked element: /html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/h2[1]
 """
+# But if wrong result:
+se.Wait(TAG, "h2").text("Login")
+# Result if se.assert=True:
+"""
+Wait Element found ('tag name', 'h2')  ... OK
+Traceback (most recent call last):
+  File "/Users/sky/Projects/ibench/Front-end/ibench.py", line 93, in <module>
+     ....
+  File "/Users/sky/Projects/ibench/Front-end/selen.py", line 158, in assertion
+    assert False, message
+AssertionError: !!! Wrong Text "Log in" at element: "/html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/h2[1]"
+!!! !!! Wrong Text "Log in" at element: "/html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/h2[1]"
 
+Process finished with exit code 1
+"""
+# Result if se.assert=False
+"""
+Wait Element found ('tag name', 'h2')  ... OK
+!!! !!! Wrong Text "Log in" at element: "/html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/h2[1]"
+Got: Log in
+Expected: Login
+"""
+#Process continued
 ```
 
 when using this method, you do not need to click on the element and clear it, this logic is already inside
