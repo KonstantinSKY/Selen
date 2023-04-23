@@ -166,7 +166,7 @@ All  searching methods always find a array of WebElements and gets a single WebW
 Almost all methods of finding WebElements and actions on them can be assembled logical chains of code
 
 If the code chain in one line getting the end, but actions on the last found elements can be continued in a new line, because these elements are stored in the variables: `se.elen` and `se.elems` 
-Exampe:
+Example:
 ```python
 email="email@gmail.com"
 se.Find(NAME, "email").type(email).sleep(0.2, 1).attr('value', email).parent(2).tag("span").attr('class', 'validation_status_ok')
@@ -427,7 +427,7 @@ when using this method, you do not need to click on the element and clear it, th
 - if a text argument is added in brackets, then this method compares the text arguments in brackets with the URL of The opened  the WebPage and checks
 
 
-### `xpath_query()` - Absolute XPATH of WebElements
+### `xpath_query()` - Absolute XPATH of WebElement
 
 This method return absolute xpath of WebElement. The found xpath automatically performs a reverse check for the search for the element using exactly this xpath.
 This method is always final and after it the chain of methods cannot continue
