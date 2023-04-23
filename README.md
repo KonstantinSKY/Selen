@@ -42,7 +42,8 @@ se.Find(CLASS, "class name")
 se.Find(CSS, "css selector")
 ```
 - No exception handling is required, the logic is already inside the White method
-***-`se` is short from `self`
+
+- -`se` is short from `self`
 
 ### Simplified adding locators to methods by several variants
 In usual Selenium Was like:
@@ -77,8 +78,10 @@ se.Find(class_locator)
 
 ### `Find()` and `find()` are different methods
 Method `Find` (with Capital first letter) used if it calls first after the WebDriver (for All WEB page elements). 
+
 The lowercase method `find` is used when calling after another already found element.
-There are several more methods that work in the same principle. But more on that later.
+
+There are several more methods that work in the same principle. 
 
 `se.Find(locator(s),[locators(s), ... locators(s])`
 
