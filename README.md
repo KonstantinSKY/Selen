@@ -17,7 +17,7 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 
 ### New find method and simplified adding locators as method arguments
 
-In Selenium it was like this:
+In Selenium, it was like this:
 ```python
 
 driver.find_element(By.ID, "id")
@@ -48,15 +48,15 @@ se.Find(CSS, "css selector")
 In usual Selenium Was like:
 ```python
 driver.find_element(By.XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-driver.find_element(By.CLASS_NAME, ""Login_submit_wrapper__2-PYe"")
+driver.find_element(By.CLASS_NAME, "Login_submit_wrapper__2-PYe")
 
 #or
 driver.find_element("xpath", "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-driver.find_element("class name", ""Login_submit_wrapper__2-PYe"")
+driver.find_element("class name", "Login_submit_wrapper__2-PYe")
 
 #or with locator variables
 xpath_locator = ("xpath", "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-class_locator = ("class_name", "Login_submit_wrapper__2-PYe"")
+class_locator = ("class_name", "Login_submit_wrapper__2-PYe")
 
 driver.find_element(*xpath_locator)
 driver.find_element(class_locator[0], class_locator[1])
@@ -64,11 +64,11 @@ driver.find_element(class_locator[0], class_locator[1])
 With Selen is:
 ```python
 se.Find(XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-se.Find(CLASS, ""Login_submit_wrapper__2-PYe"")
+se.Find(CLASS, "Login_submit_wrapper__2-PYe")
 
 #or with locator variables
 xpath_locator = (XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-class_locator = (CLASS, "Login_submit_wrapper__2-PYe"")
+class_locator = (CLASS, "Login_submit_wrapper__2-PYe")
 
 se.Find_element(xpath_locator)
 se.Find_element(class_locator)
@@ -85,22 +85,22 @@ There are several more methods that work in the same principle. But more on that
 
 In Selenium Was:
 ```python
-driver.find_element(By.XPATH, "//xpath string...").find_element(By.CLASS_NAME, Login_submit_wrapper__2-PYe)
+driver.find_element(By.XPATH, "//xpath string...").find_element(By.CLASS_NAME, "Login_submit_wrapper__2-PYe")
 
 #or with locator variables
 xpath_locator = ("xpath", "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-class_locator = ("class_name", "Login_submit_wrapper__2-PYe"")
+class_locator = ("class_name", "Login_submit_wrapper__2-PYe")
 tag_locator = ("tag name", "input")
 
 driver.find_element(*xpath_locator).find_element(*class_locator).find_element(*tag_locator)
 ```
 Now with Selen:
 ```python
-se.Find(XPATH, "//xpath string...").find(CLASS, "Login_submit_wrapper__2-PYe)
+se.Find(XPATH, "//xpath string...").find(CLASS, "Login_submit_wrapper__2-PYe")
 
 #or with locator variables
 xpath_locator = (XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-class_locator = (CLASS, "Login_submit_wrapper__2-PYe)
+class_locator = (CLASS, "Login_submit_wrapper__2-PYe")
 tag_locator = (TAG, "input")
 
 se.Find(xpath_locator).find(class_locator).find(tag_locator)
@@ -109,18 +109,18 @@ se.Find(xpath_locator).find(class_locator).find(tag_locator)
 Several ways to search for elements by a chain of locators, all locators in one `Find` method  
 ```python
 # all locator as tuples inside one method 
-se.Find((XPATH, "//xpath string..."),(CLASS, "Login_submit_wrapper__2-PYe))
+se.Find((XPATH, "//xpath string..."),(CLASS, "Login_submit_wrapper__2-PYe"))
 
 #or with locator variables
 xpath_locator = (XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-class_locator = (CLASS, "Login_submit_wrapper__2-PYe)
+class_locator = (CLASS, "Login_submit_wrapper__2-PYe")
 tag_locator = (TAG, "input")
 
 se.Find(xpath_locator, class_locator, tag_locator)
 
 #or All locators in one variable : Tuple of tuples
 locators = ((XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]"),
-            (CLASS, "Login_submit_wrapper__2-PYe),
+            (CLASS, "Login_submit_wrapper__2-PYe"),
             (TAG, "input"))
 
 se.Find(locators)
@@ -171,7 +171,7 @@ se.Find(NAME, "email").type(email).sleep(0.2, 1).attr('value', email).parent(2).
 The same code results:
 ```python
 email = "email@email.com"
-se.Find(NAME, "email").type(email).sleep(0.2, 1).attr('value', email")
+se.Find(NAME, "email").type(email).sleep(0.2, 1).attr('value', "email")
 se.parent(2).tag("span").attr('class', 'validation_status_ok')
 #or
 se.Find(NAME, "email")
@@ -196,19 +196,19 @@ Sometimes we need to find a lot of elements then select one or more of them by i
 
 In Selenium: 
 ```python
-driver.find_elements(By.XPATH, "//xpath string...")[3].find_element(By.CLASS_NAME, Login_submit_wrapper__2-PYe)
+driver.find_elements(By.XPATH, "//xpath string...")[3].find_element(By.CLASS_NAME, "Login_submit_wrapper__2-PYe")
 ```
 In Selen
 ```python
-se.Find(XPATH, "//xpath string...", 3).find(CLASS, Login_submit_wrapper__2-PYe)
+se.Find(XPATH, "//xpath string...", 3).find(CLASS, "Login_submit_wrapper__2-PYe")
 or 
-se.Find((XPATH, "//xpath string...", 3), (CLASS, Login_submit_wrapper__2-PYe))
+se.Find((XPATH, "//xpath string...", 3), (CLASS, "Login_submit_wrapper__2-PYe"))
 ```
 
 as well we can select WebElement any set of indexes
 ```Python
 
-se.Find((XPATH, "//xpath string...", 0, 3, 5, ...), (CLASS, Login_submit_wrapper__2-PYe))
+se.Find((XPATH, "//xpath string...", 0, 3, 5, ...), (CLASS, "Login_submit_wrapper__2-PYe"))
 
 ```
 So, the full rule of using `Find` and `find` is:
@@ -248,28 +248,28 @@ se.Wait(ID, "myDynamicElement")
 ```
 And more examples:
 ```python
-se.Wait(ID, "myDynamicElement").find(CLASS, "Login_submit_wrapper__2-PYe)
+se.Wait(ID, "myDynamicElement").find(CLASS, "Login_submit_wrapper__2-PYe")
 
 #or with locator variables
 id_locator = (ID, "MyDynamicElement")
-class_locator = (CLASS, "Login_submit_wrapper__2-PYe)
+class_locator = (CLASS, "Login_submit_wrapper__2-PYe")
 tag_locator = (TAG, "input")
 
 se.Wait(xpath_locator).find(class_locator).find(tag_locator)
 
 # all locator as tuples inside one method 
-se.Wait((ID, "myDynamicElement),(CLASS, "Login_submit_wrapper__2-PYe))
+se.Wait((ID, "myDynamicElement"),(CLASS, "Login_submit_wrapper__2-PYe"))
 
 #or with locator variables
 xpath_locator = (ID, "myDynamicElement")
-class_locator = (CLASS, "Login_submit_wrapper__2-PYe)
+class_locator = (CLASS, "Login_submit_wrapper__2-PYe")
 tag_locator = (TAG, "input")
 
 se.Wait(xpath_locator, class_locator, tag_locator)
 
 #or All locators in one variable : Tuple of tuples
 locators = ((ID, "myDynamicElement"),
-            (CLASS, "Login_submit_wrapper__2-PYe),
+            (CLASS, "Login_submit_wrapper__2-PYe"),
             (TAG, "input"))
 
 se.Wait(locators)
@@ -313,7 +313,7 @@ se.Wait((TAG, "a"), xpath_locators, locators)
 ### Metods `Img()` and `img()` - finding elements containing a images and pictures
     
     `Img([ index, index2, .., index n ][check=bool])` 
-- Find images inside All Page (WebDeiver). 
+- Find images inside All Page (WebDriver). 
 
     `img([ index, index2, .., index n ][check=bool])` 
 - find images inside the last found WebElement
@@ -359,7 +359,7 @@ Image: xpath: /html/body[1]/div[2]/span[1]/img[1]
     
     `parents([level number])`
 
-By defauts it jumps up for 1 level
+By default, it jumps up for 1 level
 
 
 ## Actions with elements 
@@ -401,7 +401,7 @@ when using this method, you do not need to click on the element and clear it, th
    
     `text(["text": str])`
 
-`text: str` - is optional parametr
+`text: str` - is optional parameter
 
 - if no text argument is used here, that the Method returns text of the WebElement
     
@@ -425,7 +425,7 @@ when using this method, you do not need to click on the element and clear it, th
 
 ### `xpath_query()` - Absolute XPATH of WebElements
 
-This method returns absolute xpath of WebElement. The found xpath automatically performs a reverse check for the search for the element using exactly this xpath.
+This method gets absolute xpath of WebElement. The found xpath automatically performs a reverse check for the search for the element using exactly this xpath.
 This method is always final and after it the chain of methods cannot continue
 
 ### `count()` - Numbers of found Elements
@@ -539,8 +539,8 @@ and visibility
 
 ## Check methods
 
-## Links
+## Checking Links (href)
 
-## Images
+
 
 ## Cookies
