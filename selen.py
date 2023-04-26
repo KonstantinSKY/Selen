@@ -23,9 +23,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.opera import OperaDriverManager
-
+from seleniumwire import webdriver as SWWD
 from security import COOKIES
-from collections import Counter
 
 # from webdriver_manager.safari import SafariDriverManager
 
@@ -54,7 +53,6 @@ class Selen:
             if headless:
                 opts.add_argument('headless')
             opts.add_argument('window-size=1600x2600')
-
             self.WD = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
 
         elif wd == "Firefox":
@@ -66,7 +64,7 @@ class Selen:
         elif wd == "Edge":
             opts = webdriver.EdgeOptions()
             opts.use_chromium = True
-            opts.binary_location = '/opt/microsoft/msedge/msedge'
+            # opts.binary_location = '/opt/microsoft/msedge/msedge'
             opts.add_argument('--start-maximized')
             self.WD = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=opts)
 
@@ -75,6 +73,14 @@ class Selen:
             # opts.binary_location = "/usr/bin/opera"
             opts.add_experimental_option('w3c', True)
             self.WD = webdriver.Chrome(service=OperaService(OperaDriverManager().install()), options=opts)
+
+        elif wd == "Seleniumwire":
+            opts = SWWD.ChromeOptions()
+            opts.add_argument('--disable-blink-features=AutomationControlled')
+            if headless:
+                opts.add_argument('headless')
+            opts.add_argument('window-size=1600x2600')
+            self.WD = SWWD.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
 
         else:
             print('!!! WebDriver for: ', wd, " does NOT Exits in the system.")
@@ -643,6 +649,7 @@ class Selen:
     def add_cookies(self):
         for cookie in COOKIES[self.wd_name]:
             self.WD.execute_cdp_cmd('Network.setCookie', cookie)
+
             # self.WD.add_cookie(cookie)
 
     def save_cookies_to_file(self, file_name):
