@@ -53,6 +53,7 @@ class Selen:
             if headless:
                 opts.add_argument('headless')
             opts.add_argument('window-size=1600x2600')
+
             self.WD = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
 
         elif wd == "Firefox":
@@ -80,6 +81,7 @@ class Selen:
             if headless:
                 opts.add_argument('headless')
             opts.add_argument('window-size=1600x2600')
+
             self.WD = SWWD.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
 
         else:
@@ -267,13 +269,13 @@ class Selen:
 
     def Xpath(self, query: str, *idxs):
         self.__start()
-        self.cls(query, *idxs)
+        self.xpath(query, *idxs)
         return self
 
         # Find element by tag name inside other elements in self.elems
 
     def xpath(self, class_name: str, *idxs):
-        self.find((CLASS, class_name, *idxs))
+        self.find((XPATH, class_name, *idxs))
         return self
 
     def Id(self, id_name: str, *idxs):
