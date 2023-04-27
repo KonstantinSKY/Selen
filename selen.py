@@ -115,6 +115,9 @@ class Selen:
 
     def out(self, message=''):
         print(message, "WebElement")
+        if not self.elem:
+            print("NO ELEMENTS")
+            return None
         print(self.elem.get_attribute("outerHTML"))
         web_elem = {"tag name": self.elem.tag_name,
                     "abs xpath": self.xpath_query(),
@@ -343,16 +346,18 @@ class Selen:
         if isinstance(data, dict):
             for self.elem in self.elems:
                 result = False
-                print("elem", self.elem)
                 for attr, value in data.items():
-                    if not self.attr(attr, value).IS:
+                    real_value = self.elem.get_attribute(attr)
+                    if not real_value:
                         result = False
-                        print("attr", attr, "not found")
-                        break
+                        continue
+                    if value != real_value:
+                        result = False
+                        continue
                     result = True
-                    print("attr:", attr, value, "found")
                 if not result:
                     continue
+                self.print(f"Found Element with attributes: {data} .... OK")
                 elems.append(self.elem)
 
         if isinstance(data, str):
@@ -633,6 +638,7 @@ class Selen:
         code_counts = Counter(value.get('code') for value in self.stat.values())
         self.print("Checked:", len(self.stat), ", Status 200 OK is", code_counts[200])
         print("ALL ", len(self.stat))
+        # print(json.dumps(self.stat, indent=4))
 
     def __response_stat(self, e_hash):
         stat = self.stat[e_hash]
