@@ -1,3 +1,5 @@
+# selen v 0.9.0
+
 import json
 import hashlib
 import time
@@ -130,8 +132,27 @@ class Selen:
 
     # Print text to STDOUT if it set
     def print(self, *args, **kwargs):
-        if self.ok_print:
+        first = args[0].upper()
+        if first != 'OK' and first != 'FAIL' and first != "WARN" and self.ok_print:
             print(*args, **kwargs)
+            return
+
+        args_str = ", ".join(str(arg) for arg in args[1:])
+        kwargs_str = ", ".join(f"{key}={value}" for key, value in kwargs.items())
+        if first == "FAIL":
+            fro = "\x1b[1m\x1b[31m!!! \x1b[0m"
+            end = "\x1b[1m\x1b[31m..... FAIL\x1b[0m"
+        elif first == "OK":
+            fro = "\x1b[1m\x1b[32m\u2713 \x1b[0m"
+            end = "\x1b[1m\x1b[32m..... OK\x1b[0m"
+        elif first == "WARN":
+            fro = "\x1b[1m\x1b[33m? \x1b[0m"
+            end = "\x1b[1m\x1b[33m.....WARN \x1b[0m"
+        else:
+            return
+
+        print(f"{fro} {args_str} {kwargs_str} {end}")
+        return
 
     def __get_hash(self, elem=None) -> str:
         if elem is None:
@@ -165,9 +186,10 @@ class Selen:
         return args
 
     # Run assertion if it set
-    def assertion(self, message=''):
-        print("!!!", message)
+    def assertion(self, *args):
+        self.print(*args)
         if self.ok_assert:
+            message = ", ".join(str(arg) for arg in args)
             assert False, message
 
     # Delay chain function. Possible to set random delay between two parameters.
@@ -191,14 +213,14 @@ class Selen:
         try:
             elem = self.WDW.until(EC.presence_of_element_located(args[0]))
         except NoSuchElementException:
-            self.assertion(f"Element not found: {args[0]} ... FAIL")
+            self.assertion(f"{self.__RExcl}Element not found: {args[0]}, {self.__FAIL}")
             return
         except TimeoutException:
             print("Command timed out!")
-            self.assertion(f"Element not found: {args[0]} ... FAIL")
+            self.assertion(f"{self.__RExcl}Element not found: {args[0]} {self.__FAIL}")
             return
 
-        self.print("Wait Element found", args[0], " ... OK")
+        self.print("OK", f"Waited and Found Element : {args}")
         self.__fill_elems(elem)
 
         if args[1:]:
@@ -310,44 +332,51 @@ class Selen:
             ok = True
             if not src:
                 ok = False
-                print(f"!!! Image without source, xpath: {xpath}")
+                self.print("FAIL", f" Image without source, xpath: {xpath}")
             if not visible:
                 ok = False
-                print(f"!!! Invisible Image, xpath: {xpath}")
+                self.print("WARN", f"Invisible Image, xpath: {xpath}")
             if not alt:
                 ok = False
-                print(f"!!! Image without ALT attribute, xpath: {xpath}")
+                self.print("WARN", f"Image without ALT attribute, xpath: {xpath}")
             # checked if loaded
             complete = self.WD.execute_script("return arguments[0].complete", elem)
             n_width = self.WD.execute_script("return arguments[0].naturalWidth > 0", elem)
             if not complete or not n_width:
                 ok = False
-                print(f"!!! Image not loaded, xpath:{xpath}. Arguments: Complete={complete}, naturalWidth={n_width}")
+                self.print("FAIL", f"Image not loaded, xpath:{xpath}. "
+                                   f"Arguments: Complete={complete}, naturalWidth={n_width}")
                 self.stat[e_hash]['loaded'] = False
             else:
                 self.stat[e_hash]['loaded'] = True
             if ok:
-                print("Checked  ... OK")
+                self.print("OK", "Image Checked")
         self.print("Got images:", len(self.stat))
         return self
 
     # Selecting Element filter by contain data(text and attributes) from all elements on Page from WD
     def Contains(self, data, *idxs):
-        self.__start()
-        self.__fill_elems(self.WD.find_elements(XPATH, "//*"))
-        self.print("Count", len(self.elems))
-
+        self.elem = None
+        self.elems = []
         self.contains(data, *idxs)
         return self
 
     # Selecting Element filter by contain data(text and attributes) from other element self.elem
     def contains(self, data, *idxs):
-        elems = []
+        check_elems = []
+        if not self.elem:
+            check_elems = self.WD.find_elements(XPATH, "//*")  # Got all elements on page
+        else:
+            check_elems.extend(self.elems)
+            for elem in self.elems:
+                check_elems.extend(elem.find_elements(CSS, "*"))
+
+        result_elems = []
         if isinstance(data, dict):
-            for self.elem in self.elems:
+            for elem in check_elems:
                 result = False
                 for attr, value in data.items():
-                    real_value = self.elem.get_attribute(attr)
+                    real_value = elem.get_attribute(attr)
                     if not real_value:
                         result = False
                         continue
@@ -357,25 +386,29 @@ class Selen:
                     result = True
                 if not result:
                     continue
-                self.print(f"Found Element with attributes: {data} .... OK")
-                elems.append(self.elem)
+                result_elems.append(elem)
 
         if isinstance(data, str):
-            for elem in self.elems:
+            for elem in check_elems:
                 if elem.text != data:
                     continue
-                elems.append(elem)
+                result_elems.append(elem)
 
         if len(idxs) > 0:
             new_elems = []
             for idx in idxs[2:]:
-                if isinstance(idx, int) and 0 <= idx < len(elems):
-                    new_elems.append(elems[idx])
+                if isinstance(idx, int) and 0 <= idx < len(result_elems):
+                    new_elems.append(result_elems[idx])
                 else:
-                    print("Wrong index of elements", idx, "maximum is", len(elems))
-            elems = new_elems
+                    self.print("FAIL", "Wrong index of elements", idx, "maximum is", len(result_elems))
+            result_elems = new_elems
 
-        self.__fill_elems(elems)
+        self.__fill_elems(result_elems)
+        self.print("Contains:")
+        if self.elems:
+            self.print("OK", f'Found {len(self.elems)} element(s) by "{data}" in {len(check_elems)} element(s)')
+        else:
+            self.print("FAIL", f'NOT Found element(s) by "{data}" in {len(check_elems)} element(s)')
         return self
 
     # Select parent element of self.elem, can use number of parent level, default = 1
@@ -542,13 +575,13 @@ class Selen:
     # Service method for compare two parameter and retur
     def __checker(self, got, expect, message='') -> bool:
         if got == expect:
-            self.print("Checked:", message, "... OK")
+            self.print("OK", message)
             # self.output = self.Output("True")
             return True
-        print("Checked:", message, "... FAIL")
+        # self.print("FAIL", "Incorrect:", message)
         print("* Got data:", got)
         print("* Expected:", expect)
-        self.assertion(f"Wrong {message}")
+        self.assertion("FAIL", "Incorrect:", message)
         # self.output = self.Output("False")
         return False
 
@@ -568,7 +601,7 @@ class Selen:
             href = elem.get_attribute('href').strip()
             if not href:
                 stat['href'] = None
-                self.assertion(f"!!! No Link: No attribute 'href', xpath: {stat['xpath']}")
+                self.assertion(f"!!! No Link: No attribute 'href', xpath: {stat['xpath']} {self.__FAIL}")
                 continue
             elif href.startswith("mailto") or href.startswith("tel") or href.startswith("%"):
                 stat['href'] = href
