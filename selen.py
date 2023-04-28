@@ -1,4 +1,4 @@
-# selen v 0.9.2
+# selen - amazing add-on for selenium framework.
 
 import json
 import hashlib
@@ -26,10 +26,12 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.opera import OperaDriverManager
 from seleniumwire import webdriver as SWWD
-from security import COOKIES
+# from security import COOKIES
 
 # from webdriver_manager.safari import SafariDriverManager
+__VERSION = '0.9.2'
 
+# Locator variables
 ID = "id"
 TAG = "tag name"
 XPATH = "xpath"
@@ -699,4 +701,6 @@ class Selen:
 
 
 if __name__ == '__main__':
-    time.sleep(15)
+    print("Selen - amazing add-on for selenium framework.")
+    print("Version:", __VERSION)
+    print("https://github.com/KonstantinSKY/Selen")
