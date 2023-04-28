@@ -1,4 +1,4 @@
-# selen v 0.9.0
+# selen v 0.9.2
 
 import json
 import hashlib
@@ -127,7 +127,6 @@ class Selen:
                     "attributes": self.all_attrs(),
                     "text": self.elem.text}
         print(json.dumps(web_elem, indent=4))
-        print(type(self.elem))
         return self
 
     # Print text to STDOUT if it set
@@ -209,15 +208,14 @@ class Selen:
     def Wait(self, *args):
         self.__start()
         args = self.__args_normalizer(args)
-        # self.print("Waiting and Looking for :", args)
+        self.print("Wait: Waiting and Looking for :", args)
         try:
             elem = self.WDW.until(EC.presence_of_element_located(args[0]))
         except NoSuchElementException:
-            self.assertion(f"{self.__RExcl}Element not found: {args[0]}, {self.__FAIL}")
+            self.assertion("FAIL", f"Element not found: {args[0]}")
             return
         except TimeoutException:
-            print("Command timed out!")
-            self.assertion(f"{self.__RExcl}Element not found: {args[0]} {self.__FAIL}")
+            self.assertion("FAIL", f"Element not found, Time out: {args[0]}")
             return
 
         self.print("OK", f"Waited and Found Element : {args}")
@@ -245,13 +243,13 @@ class Selen:
     # Service function for the element finding
     def __find_one(self, *args: tuple):
         if not self.elem:
-            self.assertion(f"Previous element = {self.elem}. Cant to find next {args} element")
+            self.assertion("FAIL", f'Previous element is empty = "{self.elem}". Can not find next {args} element')
             return
             # trying to find element
         try:
             elems = self.elem.find_elements(*args[:2])
         except NoSuchElementException:
-            self.assertion(f"Element(s) not found: {args}")
+            self.assertion("FAIL", f"Element(s) not found: {args}")
             return
 
         if len(args) > 2:
@@ -260,12 +258,12 @@ class Selen:
                 if isinstance(arg, int) and 0 <= arg < len(elems):
                     new_elems.append(elems[arg])
                 else:
-                    print("Wrong index of elements", arg, "maximum is", len(elems))
+                    self.print("FAIL", "Wrong index of elements", arg, "maximum is", len(elems))
             elems = new_elems
-
         self.__fill_elems(elems)
         if self.elem is None:
-            self.assertion(f"Element(s) not found: {args}, elems: {self.elems}, elem: {self.elem}")
+            self.assertion("FAIL", f"Element(s) not found: {args}, elems: {self.elems}, elem: {self.elem}")
+        self.print("OK", f"Element(s) found: {args}, elems count: {len(self.elems)}")
         return
 
     # Find element by tag name,  chain function for all page elements and from WebDriver directly
@@ -315,7 +313,7 @@ class Selen:
     # Get all image from element self.elem and optional checking and extract
     def img(self, *idxs, check=False):
         self.tag('img', *idxs)
-        self.print("Found images:", len(self.elems))
+        self.print("Images. Found:", len(self.elems), "="*200)
         self.stat = self.Out_dict({})
 
         for elem in self.elems:
@@ -351,7 +349,7 @@ class Selen:
                 self.stat[e_hash]['loaded'] = True
             if ok:
                 self.print("OK", "Image Checked")
-        self.print("Got images:", len(self.stat))
+        self.print("Images :", len(self.stat))
         return self
 
     # Selecting Element filter by contain data(text and attributes) from all elements on Page from WD
@@ -418,7 +416,7 @@ class Selen:
             try:
                 self.find(XPATH, '..')
             except NoSuchElementException:
-                self.assertion(f"Parent Element at level {i + 1} not found")
+                self.assertion("FAIL", f"Parent Element at level {i + 1} not found")
         return self
 
     # -------------- Functions for actions with found element(s) ----------------
@@ -493,8 +491,8 @@ class Selen:
 
     # Type text in the element (self.elem)
     def type(self, text):
-        self.out_str = self.Out_str(self.elem.text)
-        self.elem.click()
+        self.out_str = self.Out_str(text)
+        self.click(action=True)
         self.elem.clear()
         self.elem.send_keys(text)
         return self
@@ -539,7 +537,7 @@ class Selen:
             return self.out_str
 
         except NoSuchElementException:
-            self.assertion(f"!!! Found Incorrect abs XPATH, Got {xpath} but Can not to find Element by it")
+            self.assertion("FAIL", f"Built Incorrect abs XPATH, Got {xpath} but Can not to find Element by it")
 
         return self
 
@@ -548,8 +546,7 @@ class Selen:
         real_value = self.elem.get_attribute(attr)
 
         if real_value is None:
-            print("!!! Attribute :", attr, "NOT found")
-            self.assertion('Attribute not found')
+            self.assertion("FAIL", f'Attribute "{attr}" not found')
             return self
 
         if value is None:
@@ -569,6 +566,7 @@ class Selen:
              }; 
              return items;
              """, elem)
+
         return attrs
 
     # -------------- Functions for check any data with found element(s) ----------------
@@ -601,11 +599,11 @@ class Selen:
             href = elem.get_attribute('href').strip()
             if not href:
                 stat['href'] = None
-                self.assertion(f"!!! No Link: No attribute 'href', xpath: {stat['xpath']} {self.__FAIL}")
+                self.assertion("FAIL", f"No found Link: No attribute 'href', xpath: {stat['xpath']}")
                 continue
             elif href.startswith("mailto") or href.startswith("tel") or href.startswith("%"):
                 stat['href'] = href
-                self.print(f"!!! Found non WEB link {href}")
+                self.print("WARN" f"Found non WEB link {href}")
                 self.print(json.dumps(stat, indent=4))
                 continue
 
@@ -615,10 +613,10 @@ class Selen:
 
         self.print("Got ", len(link_hashes))
         if asynchron:
-            self.print('Async link checking...')
+            self.print('Async link checking...', "="*200)
             asyncio.run(self.__check_links_async(link_hashes))
         else:
-            self.print('Sync links checking...')
+            self.print('Sync links checking...', "="*200)
             self.__check_links_sync(link_hashes)
 
         return self
@@ -669,20 +667,17 @@ class Selen:
 
     def __summary_stat(self):
         code_counts = Counter(value.get('code') for value in self.stat.values())
-        self.print("Checked:", len(self.stat), ", Status 200 OK is", code_counts[200])
-        print("ALL ", len(self.stat))
-        # print(json.dumps(self.stat, indent=4))
+        self.print("Checked links:", len(self.stat), ", Status 200 OK is", code_counts[200])
 
     def __response_stat(self, e_hash):
         stat = self.stat[e_hash]
         code = stat['code']
         if code == 200:
-            self.print(f"Checked  {stat['href']} .... OK")
+            self.print("OK", stat['href'], "200")
         elif code == 404:
-            print("Page:", json.dumps(stat, indent=4))
-            # self.assertion(f"Broken link found: {stat['href']} .... FAIL")
+            self.assertion("FAIL", f"Broken link found: {stat['href']} in XPATH: {stat['xpath']}")
         elif code is None:
-            self.assertion(f"Unable to reach:{stat['href']} in xpath element:{stat['xpath']} .... FAIL")
+            self.assertion("FAIL", f"Unable to reach:{stat['href']} in xpath element:{stat['xpath']}")
 
     # --------- Image Methods ---------------------------
 
