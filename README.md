@@ -11,10 +11,13 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 - accelerating the development of tests based on selenium and unittest frameworks
 - error reduction
 
+## Table of contents
+### [Find](#Find) 
+
 
 
 ## Quick start and what can Selen do:
-
+<name="Find">
 ### New find method and simplified adding locators as method arguments
 
 In Selenium, it was like this:
