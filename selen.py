@@ -7,6 +7,7 @@ from random import uniform
 from collections import Counter
 import aiohttp
 import asyncio
+from aiohttp.client_exceptions import ClientConnectorError 
 import requests
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
@@ -494,7 +495,7 @@ class Selen:
     # Type text in the element (self.elem)
     def type(self, text):
         self.out_str = self.Out_str(text)
-        self.click(action=True)
+        # self.click(action=True)
         self.elem.clear()
         self.elem.send_keys(text)
         return self
@@ -585,8 +586,32 @@ class Selen:
         # self.output = self.Output("False")
         return False
 
+    def get(self, *args, timeout=10):
+        url = self.url
+        data = {}
+        print(args)
+        for arg in args[:3]:
+            if isinstance(arg, str):
+                url = self.url + arg
+            elif isinstance(arg, dict):
+                data = arg
+        self.WD.set_page_load_timeout(timeout)
+        # Navigate to the web page
+        try:
+            self.WD.get(url)
+            self.print(f'Page "{url}" navigated', "=" * 200)
+        except TimeoutException:
+            self.print('FAIL', f'Page NOT load, load timed out after {timeout} seconds')
+            return
+        if data:
+            self.page_check(data)
+
     def check_page(self, data):
         pass
+        # self.Wait(l_h2).text('Log in')
+        # self.curr_url("https://ibench.net/krecovery")
+        # self.title("Recovery password | iBench - real-time developers Hiring")
+        # pass
 
     # --------- Links methods ------------------------------
     # Get all links from self.elem  page with WebDriver
@@ -660,7 +685,7 @@ class Selen:
             async with session.get(self.stat[e_hash]['href']) as response:
                 response.e_hash = e_hash
                 return response
-        except aiohttp.client_exceptions.ClientConnectorError as err:
+        except ClientConnectorError as err:
             print("Error:", err)
             self.stat[e_hash]['response_url'] = "Exception: Unable to reach"
             self.stat[e_hash]['code'] = None
