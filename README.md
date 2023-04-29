@@ -13,16 +13,16 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 
 ## Table of contents
  [Methods for find WebElements](Find_methods)
+
  [Find](#Find) 
 
 
 
 ## Quick start and what can Selen do:
 
-<name="Find_methods">
-## Methods for find WebElements
-<name="Find">
-### New find method and simplified adding locators as method arguments
+## Methods for find WebElements<name="Find_methods">
+
+### New find method and simplified adding locators as method arguments<name="Find">
 
 In Selenium, it was like this:
 ```python
