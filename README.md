@@ -12,11 +12,15 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 - error reduction
 
 ## Table of contents
-### [Find](#Find) 
+ [Methods for find WebElements](Find_methods)
+ [Find](#Find) 
 
 
 
 ## Quick start and what can Selen do:
+
+<name="Find_methods">
+## Methods for find WebElements
 <name="Find">
 ### New find method and simplified adding locators as method arguments
 
