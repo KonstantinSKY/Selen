@@ -10,12 +10,13 @@ import asyncio
 from aiohttp.client_exceptions import ClientConnectorError 
 import requests
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotInteractableException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import Select
 
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
@@ -30,8 +31,9 @@ from seleniumwire import webdriver as SWWD
 # from security import COOKIES
 
 # from webdriver_manager.safari import SafariDriverManager
-__VERSION = '0.9.4'
+__VERSION = '0.9.8'
 
+COOKIES = []
 # Locator variables
 ID = "id"
 TAG = "tag name"
@@ -135,7 +137,7 @@ class Selen:
     # Print text to STDOUT if it set
     def print(self, *args, **kwargs):
         first = args[0].upper()
-        if first != 'OK' and first != 'FAIL' and first != "WARN" and self.ok_print:
+        if first != 'OK' and first != 'FAIL' and first != "WARN" and first != "DIV" and self.ok_print:
             print(*args, **kwargs)
             return
 
@@ -150,6 +152,10 @@ class Selen:
         elif first == "WARN":
             fro = "\x1b[1m\x1b[33m? \x1b[0m"
             end = "\x1b[1m\x1b[33m.....WARN \x1b[0m"
+        elif first == "DIV":
+            fro = "\x1b[1m\x1b[36m% \x1b[0m"
+            div_line = "="*(150 - len(f"{args_str} {kwargs_str}"))
+            end = f"\x1b[1m\x1b[36m {div_line} \x1b[0m"
         else:
             return
 
@@ -316,7 +322,8 @@ class Selen:
     # Get all image from element self.elem and optional checking and extract
     def img(self, *idxs, check=False):
         self.tag('img', *idxs)
-        self.print("Images. Found:", len(self.elems), "="*200)
+        chk = "Checking" if check else ""
+        self.print("DIV", f"Images Found:  {len(self.elems)}. {chk}")
         self.stat = self.Out_dict({})
 
         for elem in self.elems:
@@ -362,8 +369,17 @@ class Selen:
         self.contains(data, *idxs)
         return self
 
+    def __check_data_type(self, data, *args, message=''):
+        for arg in args:
+            if isinstance(data, arg):
+                return True
+        self.assertion("FAIL", f"{message}: Incorrect method parameters type {type(data)}, it can get: {args} only ")
+        return False
+
     # Selecting Element filter by contain data(text and attributes) from other element self.elem
     def contains(self, data, *idxs):
+        if not self.__check_data_type(data, str, dict, message="contains()"): return
+
         check_elems = []
         if not self.elem:
             check_elems = self.WD.find_elements(XPATH, "//*")  # Got all elements on page
@@ -371,9 +387,9 @@ class Selen:
             check_elems.extend(self.elems)
             for elem in self.elems:
                 check_elems.extend(elem.find_elements(CSS, "*"))
-
         result_elems = []
         if isinstance(data, dict):
+            print("COUNT:", len(check_elems))
             for elem in check_elems:
                 result = False
                 for attr, value in data.items():
@@ -427,9 +443,14 @@ class Selen:
     def click(self, action=False, pause=0):
         if action:
             self.__action_click(pause=pause)
+            self.print("Clicked in Action element:", self.elem)
         else:
-            self.elem.click()
-        self.print("Clicked element:", self.elem)
+            try:
+                self.elem.click()
+                self.print("Clicked element:", self.elem)
+            except ElementNotInteractableException:
+                self.assertion("FAIL", f'Cannot click, try to use ".click(action=True)", '
+                                       f'the Element:"{self.xpath_query()}"')
         return self
 
     # Context Click chain function with pause.
@@ -489,15 +510,31 @@ class Selen:
         self.__checker(self.elem.text, text, f'Text "{self.elem.text}" at element: "{self.xpath_query()}"')
         return self
 
-    # def texts(self, texts=[]: list):
-    #     pass
-
     # Type text in the element (self.elem)
     def type(self, text):
         self.out_str = self.Out_str(text)
         # self.click(action=True)
         self.elem.clear()
         self.elem.send_keys(text)
+        return self
+
+    def dropdown_select(self, data):
+        self.__check_data_type(data, int, str, message="dropdown_select")
+        tag = self.elem.tag_name
+        if tag != "select":
+            self.assertion("FAIL", f"Cannot select from element with tag = <{tag}>, it works with <select>")
+            return self
+        dropdown = Select(self.elem)
+        try:
+            if isinstance(data, str):
+                dropdown.select_by_value(data)
+                self.print("OK", f'Selected: "{data}" from dropdown menu: "{self.xpath_query()}"')
+            # dropdown.select_by_visible_text(data)
+            if isinstance(data, int):
+                dropdown.select_by_index(data)
+                self.print("OK", f'Selected by Index:: "{data}" from dropdown menu: "{self.xpath_query()}"')
+        except NoSuchElementException:
+            self.assertion("FAIL", f'Cannot find add select by "{data}" from dropdown menu: "{self.xpath_query()}"')
         return self
 
     # Print count of selected elements of check if the count of element == asked counts and returns
@@ -589,7 +626,6 @@ class Selen:
     def get(self, *args, timeout=10):
         url = self.url
         data = {}
-        print(args)
         for arg in args[:3]:
             if isinstance(arg, str):
                 url = self.url + arg
@@ -602,12 +638,13 @@ class Selen:
         except TimeoutException:
             self.print('FAIL', f'Page NOT load, load timed out after {timeout} seconds')
             return
-        self.print(f'Page "{url}" navigated', "=" * 200)
+        self.print("DIV", f'Page "{url}" navigated')
         self.curr_url(url)
         if data:
             self.check_page(data)
 
     def check_page(self, data: dict):
+        self.print("DIV", f'Checking current page {self.WD.current_url}')
         if "wait" in data and data["wait"]:
             self.Wait(data["wait"])
         if "url" in data and data["url"]:
@@ -624,6 +661,7 @@ class Selen:
         self.stat = self.Out_dict({})
         self.tag('a')
         link_hashes = []
+        self.print("DIV", f'Checking links (href), found: {len(self.elems)}')
         for elem in self.elems:
             e_hash = self.__get_hash(elem)
             stat = self.stat[e_hash] = {'xpath': self.xpath_query(elem)}
@@ -644,10 +682,10 @@ class Selen:
 
         self.print("Got ", len(link_hashes))
         if asynchron:
-            self.print('Async link checking...', "="*200)
+            self.print('Async method using ...')
             asyncio.run(self.__check_links_async(link_hashes))
         else:
-            self.print('Sync links checking...', "="*200)
+            self.print('Sync method using...')
             self.__check_links_sync(link_hashes)
 
         return self
