@@ -20,7 +20,8 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 
 ## Quick start and what can Selen do:
 
-## Methods for find WebElements<name="Find_methods">
+<a name="Find_methods"></a>
+## Methods for find WebElements
 
 ### New find method and simplified adding locators as method arguments<name="Find">
 
