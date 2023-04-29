@@ -30,7 +30,7 @@ from seleniumwire import webdriver as SWWD
 # from security import COOKIES
 
 # from webdriver_manager.safari import SafariDriverManager
-__VERSION = '0.9.2'
+__VERSION = '0.9.4'
 
 # Locator variables
 ID = "id"
@@ -599,19 +599,23 @@ class Selen:
         # Navigate to the web page
         try:
             self.WD.get(url)
-            self.print(f'Page "{url}" navigated', "=" * 200)
         except TimeoutException:
             self.print('FAIL', f'Page NOT load, load timed out after {timeout} seconds')
             return
+        self.print(f'Page "{url}" navigated', "=" * 200)
+        self.curr_url(url)
         if data:
-            self.page_check(data)
+            self.check_page(data)
 
-    def check_page(self, data):
-        pass
-        # self.Wait(l_h2).text('Log in')
-        # self.curr_url("https://ibench.net/krecovery")
-        # self.title("Recovery password | iBench - real-time developers Hiring")
-        # pass
+    def check_page(self, data: dict):
+        if "wait" in data and data["wait"]:
+            self.Wait(data["wait"])
+        if "url" in data and data["url"]:
+            self.curr_url(data["url"])
+        if "title" in data and data["title"]:
+            self.title(data["title"])
+        self.Img(check=True)
+        self.check_links()
 
     # --------- Links methods ------------------------------
     # Get all links from self.elem  page with WebDriver
