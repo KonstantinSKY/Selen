@@ -379,7 +379,6 @@ class Selen:
     # Selecting Element filter by contain data(text and attributes) from other element self.elem
     def contains(self, data, *idxs):
         if not self.__check_data_type(data, str, dict, message="contains()"): return
-
         check_elems = []
         if not self.elem:
             check_elems = self.WD.find_elements(XPATH, "//*")  # Got all elements on page
@@ -389,7 +388,6 @@ class Selen:
                 check_elems.extend(elem.find_elements(CSS, "*"))
         result_elems = []
         if isinstance(data, dict):
-            print("COUNT:", len(check_elems))
             for elem in check_elems:
                 result = False
                 for attr, value in data.items():
