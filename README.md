@@ -12,6 +12,8 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 - error reduction
 
 ## Table of contents
+
+ [Getting the page data by URL with options](#Get_method)
  [Methods for find WebElements](#Find_methods)
 
  [Find](#Find) 
@@ -19,9 +21,12 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 
 
 ## Quick start and what can Selen do:
+<a name="Get_method"></a>
+### Getting the page data by URL with options 
+### 
 
 <a name="Find_methods"></a>
-## Methods for find WebElements
+## Methods for find of WebElements
 
 ### New find method and simplified adding locators as method arguments<name="Find">
 
