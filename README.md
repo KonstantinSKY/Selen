@@ -12,7 +12,7 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 - error reduction
 
 ## Table of contents
- [Methods for find WebElements](Find_methods)
+ [Methods for find WebElements](#Find_methods)
 
  [Find](#Find) 
 
