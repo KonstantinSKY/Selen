@@ -50,7 +50,9 @@ se.page_src("No result found")
 
 
 ## Connection between Selen and Selenium WebDriver and Selenium WebElements
-Selen 
+Selen is a class that creates its own instances.
+`se = Selen("Chrome")` or `se = Selen("Firefox", url = "http://www.pyhon.org")`
+``
 
 <a name="WebDriver"></a>
 ### Using Selenium WebDriver from Selen
