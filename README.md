@@ -598,13 +598,9 @@ se.Tag("select").dropdown_select(23)
 One method for several checking actions:
     
     - wait and found element on the page  
-
     - check page title
-
     - check current url
-
     - check all images
-
     - check all links
 
 `se.check_page([data: dict])`
@@ -612,11 +608,8 @@ One method for several checking actions:
 - `data` - parameters of page tests in Python dictionary format `{key: value}`
 
 possible keys for parameters:
-
     -`wait` - the key of the tuple locator value for wait and find WebElement
-
     -`title` - the key of the string title for checking
-
     -`url` - the key of the string url for checking wit current page url
 
 if `data` is absent by default the method will check Images and Links only
