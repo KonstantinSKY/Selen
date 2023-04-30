@@ -69,20 +69,23 @@ and continue to use it and work with it as with regular Selenium, like
 
 <a name="Internal Variables"></a>
 ### Internal variables or attributes of a Selen instance
+An instance of the Selenium class contains internal variables that can be changed by the instance itself during operation or by users
 
 #### `se.url`
 
 This variable should contain the project's main url, or it can simply remain an empty string
 
-It can be set at instantiation time:
+It can be set at instantiation time or any time later:
+```python
+se = Selen("Firefox", url="http://www.python.org")`
 
-`se = Selen("Firefox", url="http://www.python.org")`
+# or at any time as follows:
+se = Selen("Chrome")
+se.url = "http://www.python.org"
 
-or at any time as follows
-
-`se = Selen("Chrome")
- se.url = "http://www.python.org"
-`
+# to use the variable:
+my_main_url = se.url 
+```
 
 <a name="Get_method"></a>
 ### Getting the page data by URL with options
@@ -99,15 +102,18 @@ se.get("https//www.python.org")
 # or if the main URL is set when the Selen class is instantiated
 se = Selen("Firefox", url="http://www.pyhon.org")
 se.get()
+```
 
-# and in this case you can navigate to nested page
+If `se.url` is already set, you can navigate to nested page by sublinks only
+```python
 se.get(downloads/)
 se.get(downloads/release/python-31011/
 ```
-
-
-### 
-### 
+while executing `se.get()`, after opening page, Selen automatically check if the requested url matches the current url of the loaded page with result:
+```
+%  Page "https://www.python.org/" navigated   =======================================================================================
+✓  Current_URL https://www.python.org/  ..... OK
+```
 
 <a name="Find_methods"></a>
 ## Methods for find of WebElements
