@@ -1,5 +1,5 @@
 # SELEN 
-## Easier than clear Selenium
+## Easier and shorter than clear Selenium
 this is a Python mini framework or an add-on for the Selenium and unitest frameworks
 
 ## Basic goals
@@ -52,7 +52,7 @@ se.page_src("No result found")
 ## Connection between Selen and Selenium WebDriver and Selenium WebElements
 Selen is a class that creates its own instances.
 
-`se = Selen("Chrome")` or `se = Selen("Firefox", url = "http://www.pyhon.org")`
+`se = Selen("Chrome")` or `se = Selen("Firefox", url="http://www.python.org")`
 
 <a name="WebDriver"></a>
 ### Using Selenium WebDriver from Selen
@@ -61,12 +61,49 @@ You can call the WebDriver it directly
 
 `se.WD.`
 
-and continue to use it and work with it as with regular Selenium, like `se.WD.find_element(By.NAME, "q")`. 
+and continue to use it and work with it as with regular Selenium, like 
+
+`se.WD.find_element(By.NAME, "q")`. 
 
 `se.WD` is just link to Selenium WebDriver instance like `webdriver.Firefox()` 
 
+<a name="Internal Variables"></a>
+### Internal variables or attributes of a Selen instance
+
+#### `se.url`
+
+This variable should contain the project's main url, or it can simply remain an empty string
+
+It can be set at instantiation time:
+
+`se = Selen("Firefox", url="http://www.python.org")`
+
+or at any time as follows
+
+`se = Selen("Chrome")
+ se.url = "http://www.python.org"
+`
+
 <a name="Get_method"></a>
 ### Getting the page data by URL with options
+There are two ways to navigate to a page given by the URL:
+
+Selenium regular way:
+`se.WD.get("https://www.pyhon.org")`
+
+Selen advanced way:
+```python
+se = Selen("Firefox")
+se.get("https//www.python.org")
+
+# or if the main URL is set when the Selen class is instantiated
+se = Selen("Firefox", url="http://www.pyhon.org")
+se.get()
+
+# and in this case you can navigate to nested page
+se.get(downloads/)
+se.get(downloads/release/python-31011/
+```
 
 
 ### 
