@@ -15,7 +15,7 @@ this is a mini framework or an add-on for the selenium and unitest frameworks fo
 
 [Getting Started](#Started)
     
-    [Simple Usage](#Simple_Usage)
+   [Simple Usage](#Simple_Usage)
 
     
 [Example Explained](#Example_Explained)
