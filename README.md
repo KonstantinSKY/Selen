@@ -92,7 +92,7 @@ my_main_url = se.url
 There are two ways to navigate to a page given by the URL:
 
 Selenium regular way:
-`se.WD.get("https://www.pyhon.org")`
+`se.WD.get( url: str )`
 
 Selen advanced way `se.get([url: str], [check_data: dict])`
 ```python
