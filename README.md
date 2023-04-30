@@ -17,11 +17,9 @@ this is a mini framework or an add-on for the selenium and unitest frameworks fo
 * [Simple Usage](#Simple_Usage)
 * [Example Explained](#Example_Explained)
 
- [Connection between Selen and Selenium WebDriver and Selenium Web Element](#Connection)
-
-    [Accessing Selenium WebDriver from Selen](#WebDriver)
-
-    [Getting the page data by URL with options](#Get_method)
+[Connection between Selen and Selenium WebDriver and Selenium WebElements](#Connection)
+* ***[Accessing Selenium WebDriver from Selen](#WebDriver)
+*[Getting the page data by URL with options](#Get_method)
 
     [WEB elements](#WebElements)
 
