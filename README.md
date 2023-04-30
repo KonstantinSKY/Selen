@@ -12,6 +12,9 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 - error reduction
 
 ## Table of contents
+[Instalation](#Instalation)
+* [Get all needed Python modules with requirements.txt](#requirements)
+* [Automatic getting common WebDrivers](#automatic)
 
 [Getting Started](#Started)
 * [Simple Usage](#Simple_Usage)
@@ -23,6 +26,8 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
     - [`se.url` - the main Project URL storage ](#storage)
     - [`se.elem` and `se.elems` - the current WebElement storages ](#elems)
     - [`se.stat` - the current statisticts or statuses storage](#stat)
+    - [The attributes available to locate elements on a page](#attr) 
+
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
 * [Page source](#PageSource)
@@ -104,6 +109,20 @@ my_main_url = se.url
 
 <a name="stat"></a>
 #### `se.stat` - the current statisticts or statuses storage
+
+#### The attributes available to locate elements on a page. 
+These are the attributes available and their Selenium equivalents
+
+  Selen                    Selenium
+- `ID`                    `By.ID = "id"` 
+- `NAME`                  `By.NAME = "name"` 
+- `XPATH`                 `By.XPATH = "xpath"` 
+- TAG_NAME = "tag name" 
+
+CLASS_NAME = "class name" 
+CSS_SELECTOR = "css selector"
+- LINK_TEXT = "link text" 
+PARTIAL_LINK_TEXT = "partial link text" 
 
 <a name="Get_method"></a>
 ### Getting the page data by URL with options
@@ -622,8 +641,6 @@ se.check_page({
 # or by default check Images and Links only
 se.check_page()
 ```
-
-
 
 ### `text()`  - Text of WebElement(s)
    
