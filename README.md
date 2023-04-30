@@ -122,7 +122,7 @@ CLASS                       By.CLASS_NAME = "class name"
 CSS                         By.CSS_SELECTOR = "css selector"
 LINK                        By.LINK_TEXT = "link text"
 PART_LINK                   By.PARTIAL_LINK_TEXT = "partial link text" 
-'''
+```
 
 <a name="Get_method"></a>
 ### Getting the page data by URL with options
