@@ -52,7 +52,7 @@ l_input = (TAG, "input")
 
 class Selen:
 
-    def __init__(self, wd="Chrome", headless=False):
+    def __init__(self, wd="Chrome", headless=False, url=''):
 
         if wd == "Chrome":
             opts = webdriver.ChromeOptions()
@@ -104,7 +104,7 @@ class Selen:
         # self.WD.maximize_window()
         self.AC = ActionChains(self.WD)
         self.WDW = WebDriverWait(self.WD, 10)
-        self.url = ""
+        self.url = url if url else ""
         self.ok_assert = True
         self.ok_print = True
         self.IS = None
