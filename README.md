@@ -26,14 +26,14 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
 * [Page source](#PageSource)
-[]
 [Chains of Selen methods and actions with them](#chains)
 
 [Locating element and finding WebElements](#Locating)
 * [Setting locators in Selen](#locators)
 * [`Find()` anb `find()`](#find)
 
-
+[Actions with Page and WebElements](#actions)
+* []
 [Testing and checking](#testing)
 * [Basic page test `se.check_page()`](#check_page)
 * [Image tests](#images)
@@ -498,7 +498,7 @@ Image: xpath: /html/body[1]/div[2]/span[1]/img[1]
 
 By default, it jumps up for 1 level
 
-
+<a name="actions"></a>
 ## Actions with elements 
 
 ### `click()` click and action click in one
@@ -569,6 +569,7 @@ Expected: Login
 
 when using this method, you do not need to click on the element and clear it, this logic is already inside
 
+<a name="actions"></a>
 ### Select from dropdown WebElement `dropdown_select()` 
 
 You can select any option from dropdown list by text or by integer index (position in list)
@@ -611,8 +612,11 @@ One method for several checking actions:
 - `data` - parameters of page tests in Python dictionary format `{key: value}`
 
 possible keys for parameters:
+
     -`wait` - the key of the tuple locator value for wait and find WebElement
+
     -`title` - the key of the string title for checking
+
     -`url` - the key of the string url for checking wit current page url
 
 if `data` is absent by default the method will check Images and Links only
