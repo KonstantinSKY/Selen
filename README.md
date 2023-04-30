@@ -595,22 +595,21 @@ se.Tag("select").dropdown_select(23)
 <a name="check_page"></a>
 ### Basic page test `se.check_page()`
 
-One method for several checking actions:
-    
-    - wait and found element on the page  
-    - check page title
-    - check current url
-    - check all images
-    - check all links
+One method for several checking actions:    
+- wait and found element on the page  
+- check page title
+- check current url
+- check all images
+- check all links
 
 `se.check_page([data: dict])`
 
 - `data` - parameters of page tests in Python dictionary format `{key: value}`
 
 possible keys for parameters:
-    -`wait` - the key of the tuple locator value for wait and find WebElement
-    -`title` - the key of the string title for checking
-    -`url` - the key of the string url for checking wit current page url
+-`wait` - the key of the tuple locator value for wait and find WebElement
+-`title` - the key of the string title for checking
+-`url` - the key of the string url for checking wit current page url
 
 if `data` is absent by default the method will check Images and Links only
 ```python
