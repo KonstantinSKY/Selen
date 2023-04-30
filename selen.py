@@ -623,11 +623,11 @@ class Selen:
         return False
 
     def get(self, *args, timeout=10):
-        url = self.url
+        url = self.url.strip().rstrip("/") + "/"
         data = {}
         for arg in args[:3]:
             if isinstance(arg, str):
-                url = self.url.strip().rstrip("/") + "/" + arg.strip().lstrip("/")
+                url = self.url + arg.strip().strip("/") + "/"
             elif isinstance(arg, dict):
                 data = arg
         self.WD.set_page_load_timeout(timeout)
