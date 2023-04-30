@@ -61,7 +61,7 @@ You can call the WebDriver it directly
 
 `se.WD.`
 
-and continue to use it and work with it as with regular Selenium. 
+and continue to use it and work with it as with regular Selenium, like `se.WD.find_element(By.NAME, "q")`. 
 
 `se.WD` is just link to Selenium WebDriver instance like `webdriver.Firefox()` 
 
