@@ -580,7 +580,7 @@ This method works with `<select>` tag element only.
 
 `data` is string or integer type
 
-```pyhton
+```python
 se.Tag("select").dropdown_select("Canada")
 
 se.Tag("select").dropdown_select(23)
@@ -606,10 +606,10 @@ One method for several checking actions:
 
 - `data` - parameters of page tests in Python dictionary format `{key: value}`
 
-possible keys for parameters:
--`wait` - the key of the tuple locator value for wait and find WebElement
--`title` - the key of the string title for checking
--`url` - the key of the string url for checking wit current page url
+Possible keys for `data` parameters:
+- `wait` - the key of the tuple locator value for wait and find WebElement
+- `title` - the key of the string title for checking
+- `url` - the key of the string url for checking wit current page url
 
 if `data` is absent by default the method will check Images and Links only
 ```python
