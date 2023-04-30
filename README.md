@@ -112,17 +112,17 @@ my_main_url = se.url
 
 #### The attributes available to locate elements on a page. 
 These are the attributes available and their Selenium equivalents
-
-  Selen                    Selenium
-- `ID`                    `By.ID = "id"` 
-- `NAME`                  `By.NAME = "name"` 
-- `XPATH`                 `By.XPATH = "xpath"` 
-- TAG_NAME = "tag name" 
-
-CLASS_NAME = "class name" 
-CSS_SELECTOR = "css selector"
-- LINK_TEXT = "link text" 
-PARTIAL_LINK_TEXT = "partial link text" 
+```python
+ Selen                       Selenium
+ID                          By.ID = "id" 
+NAME                        By.NAME = "name" 
+XPATH                       By.XPATH = "xpath" 
+TAG                         By.TAG_NAME = "tag name"
+CLASS                       By.CLASS_NAME = "class name"
+CSS                         By.CSS_SELECTOR = "css selector"
+LINK                        By.LINK_TEXT = "link text"
+PART_LINK                   By.PARTIAL_LINK_TEXT = "partial link text" 
+'''
 
 <a name="Get_method"></a>
 ### Getting the page data by URL with options
