@@ -20,6 +20,7 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 [Connection between Selen and Selenium WebDriver and Selenium WebElements](#Connection)
 * [Using Selenium WebDriver from Selen](#WebDriver)
 * [Internal variables and attributes of a Selen instance](#Internal_variables)
+**  -[`se.url`](#url)
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
 
@@ -72,6 +73,7 @@ and continue to use it and work with it as with regular Selenium, like
 ### Internal variables or attributes of a Selen instance
 An instance of the Selenium class contains internal variables that can be changed by the instance itself during operation or by users
 
+<a name="url"></a>
 #### `se.url`
 
 This variable should contain the project's main url, or it can simply remain an empty string
@@ -129,6 +131,9 @@ se.get("downloads",{
 Try it yourself!
 
 <a name="Find_methods"></a>
+
+
+
 ## Methods for find of WebElements
 
 ### New find method and simplified adding locators as method arguments<name="Find">
