@@ -20,7 +20,7 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 [Connection between Selen and Selenium WebDriver and Selenium WebElements](#Connection)
 * [Using Selenium WebDriver from Selen](#WebDriver)
 * [Internal variables and attributes of a Selen instance](#Internal_variables)
-**  -[`se.url`](#url)
+** -[`se.url`](#url)
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
 
