@@ -1,5 +1,5 @@
 # SELEN 
-this is a mini framework or an add-on for the selenium and unitest frameworks
+this is a mini framework or an add-on for the selenium and unitest frameworks for Python
 
 ## Basic goals
 
@@ -13,16 +13,44 @@ this is a mini framework or an add-on for the selenium and unitest frameworks
 
 ## Table of contents
 
- [Getting the page data by URL with options](#Get_method)
- [Methods for find WebElements](#Find_methods)
+ [Getting Started](#Started)
+
+    [Simple Usage](#Simple_Usage)
+
+    [Example Explained](#Example_Explained)
+
+ [Connection between Selen and Selenium WebDriver and Selenium Web Element](#Connection)
+
+    [Accessing Selenium WebDriver from Selen](#WebDriver)
+
+    [Getting the page data by URL with options](#Get_method)
+
+    [WEB elements](#WebElements)
+
+
+ [Locating element](#Locating)
+
+ [Locating find WebElements](#Find_methods)
 
  [Find](#Find) 
 
+ [Methods for test and checking](#test_methods)
+
+ [Outputs and prints]
 
 
-## Quick start and what can Selen do:
+## Getting started and:
+
+### Simple Usage
+
+
+
 <a name="Get_method"></a>
-### Getting the page data by URL with options 
+
+### Getting the page data by URL with options
+
+
+### 
 ### 
 
 <a name="Find_methods"></a>
