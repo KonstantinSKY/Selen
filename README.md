@@ -1,6 +1,6 @@
 # SELEN 
 ## Easier than clear Selenium
-this is a mini framework or an add-on for the selenium and unitest frameworks for Python
+this is a Python mini framework or an add-on for the Selenium and unitest frameworks
 
 ## Basic goals
 
@@ -38,7 +38,7 @@ this is a mini framework or an add-on for the selenium and unitest frameworks fo
 <a name="Simple_Usage"></a>
 ### Simple Usage
 If you have installed Selen Python module with bindings and Selenium Python bindings, you can start using it like this.
-```
+```python
 from Selen import *
 
 se = Selen("Firefox")
@@ -49,8 +49,17 @@ se.page_src("No result found")
 ```
 
 
-<a name="Get_method"></a>
+## Connection between Selen and Selenium WebDriver and Selenium WebElements
+Selen 
 
+<a name="WebDriver"></a>
+### Using Selenium WebDriver from Selen
+During activation, Selen creates a Selenium driver internally. 
+You can call it directly:
+`se.WD.`
+
+and continue to work with it as with regular Selenium, it is just link to Selenium WebDriver instanse `webdriver.Firefox()`
+<a name="Get_method"></a>
 ### Getting the page data by URL with options
 
 
