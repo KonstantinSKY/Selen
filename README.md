@@ -94,7 +94,7 @@ There are two ways to navigate to a page given by the URL:
 Selenium regular way:
 `se.WD.get("https://www.pyhon.org")`
 
-Selen advanced way:
+Selen advanced way `se.get([url: str], [check_data: dict])`
 ```python
 se = Selen("Firefox")
 se.get("https//www.python.org")
@@ -109,11 +109,23 @@ If `se.url` is already set, you can navigate to nested page by sublinks only
 se.get(downloads/)
 se.get(downloads/release/python-31011/
 ```
-while executing `se.get()`, after opening page, Selen automatically check if the requested url matches the current url of the loaded page with result:
+While executing `se.get()`, after opening page, Selen automatically check if the requested url matches the current url of the loaded page with result:
 ```
 %  Page "https://www.python.org/" navigated   =======================================================================================
 ✓  Current_URL https://www.python.org/  ..... OK
 ```
+`se.get()` can also do some basic testing of the current opened page: checks title, Wait checks - expectations for some element, checks all images and links.
+
+For using the options, set additional data as dictionary object:
+```python
+se = Selen("Firefox", url="http://www.pyhon.org")
+se.get("downloads",{
+    "wait": (TAG, "h1"), 
+    "title": "Download Python | Python.org"
+    })
+
+```
+Try it yourself!
 
 <a name="Find_methods"></a>
 ## Methods for find of WebElements
