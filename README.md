@@ -616,7 +616,7 @@ possible keys for parameters:
     -`url` - the key of the string url for checking wit current page url
 
 if `data` is absent by default the method will check Images and Links only
-```pyhon
+```python
 se.check_page({
     "wait": (TAG, "h1"), 
     "title": "Download Python | Python.org"
