@@ -10,7 +10,8 @@ import asyncio
 from aiohttp.client_exceptions import ClientConnectorError 
 import requests
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotInteractableException
+from selenium.common.exceptions import NoSuchElementException, \
+    TimeoutException, ElementNotInteractableException, InvalidArgumentException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webelement import WebElement
@@ -631,10 +632,15 @@ class Selen:
                 data = arg
         self.WD.set_page_load_timeout(timeout)
         # Navigate to the web page
+        if not url:
+            self.assertion("FAIL", f"NO any url to navigate to any page")
+            return
         try:
             self.WD.get(url)
+        except InvalidArgumentException:
+            self.assertion('FAIL', f'Incorrect URL: "{url}"')
         except TimeoutException:
-            self.print('FAIL', f'Page NOT load, load timed out after {timeout} seconds')
+            self.assertion('FAIL', f'Page NOT load, load timed out after {timeout} seconds')
             return
         self.print("DIV", f'Page "{url}" navigated')
         self.curr_url(url)
