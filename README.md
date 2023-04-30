@@ -1,8 +1,8 @@
 # SELEN 
+## Easier than clear Selenium
 this is a mini framework or an add-on for the selenium and unitest frameworks for Python
 
 ## Basic goals
-
 
 - making it easier to write code of tests
 - automatic update of web drivers for different browsers 
@@ -37,7 +37,16 @@ this is a mini framework or an add-on for the selenium and unitest frameworks fo
 ## Getting started
 <a name="Simple_Usage"></a>
 ### Simple Usage
+If you have installed Selen Python module with bindings and Selenium Python bindings, you can start using it like this.
+```
+from Selen import *
 
+se = Selen("Firefox")
+se.get("http://www.python.org")
+se.title("Pyhton")
+se.Find(NAME, "q").type("pycon").key(RETURN)
+se.page_src("No result found")
+```
 
 
 <a name="Get_method"></a>
