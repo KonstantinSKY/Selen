@@ -21,20 +21,27 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 * [Using Selenium WebDriver from Selen](#WebDriver)
 * [Internal variables and attributes of a Selen instance](#Internal_variables)
     - [`se.url` - the main Project URL storage ](#storage)
-    - [`se.elen` and `se.elems` - the current WebElement storages ](#elems)
+    - [`se.elem` and `se.elems` - the current WebElement storages ](#elems)
     - [`se.stat` - the current statisticts or statuses storage](#stat)
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
+* [Page source](#PageSource)
+[]
+[Chains of Selen methods and actions with them](#chains)
 
-[Locating element](#Locating)
+[Locating element and finding WebElements](#Locating)
+* [Setting locators in Selen](#locators)
+* [`Find()` anb `find()`](#find)
 
- [Locating find WebElements](#Find_methods)
 
- [Find](#Find) 
+[Testing and checking](#testing)
+* [Basic page test `se.check_page()`](#check_page)
+* [Image tests](#images)
+* [Links (href) tests](#links)
 
- [Methods for test and checking](#test_methods)
 
- [Outputs and prints]
+
+**[Outputs and prints]
 
 
 <a name="Started"></a>
@@ -93,7 +100,7 @@ my_main_url = se.url
 ```
 
 <a name="elems"></a>
-#### `se.elen` and `se.elems` - the WebElement storages
+#### `se.elem` and `se.elems` - the WebElement storages
 
 <a name="stat"></a>
 #### `se.stat` - the current statisticts or statuses storage
@@ -139,9 +146,6 @@ se.get("downloads",{
 Try it yourself!
 
 <a name="Find_methods"></a>
-
-
-
 ## Methods for find of WebElements
 
 ### New find method and simplified adding locators as method arguments<name="Find">
@@ -294,7 +298,7 @@ All  searching methods always find a array of WebElements and gets a single WebW
 ### Chains of Selen methods and actions with them
 Almost all methods of finding WebElements and actions on them can be assembled logical chains of code
 
-If the code chain in one line getting the end, but actions on the last found elements can be continued in a new line, because these elements are stored in the variables: `se.elen` and `se.elems` 
+Even if the code chain in one line getting the end You can call next methods and actions on the last found elements can be continued in a new line, because these elements are stored in the variables: `se.elen` and `se.elems` 
 Example:
 ```python
 email="email@gmail.com"
@@ -565,7 +569,65 @@ Expected: Login
 
 when using this method, you do not need to click on the element and clear it, this logic is already inside
 
+### Select from dropdown WebElement `dropdown_select()` 
+
+You can select any option from dropdown list by text or by integer index (position in list)
+
+This method works with `<select>` tag element only.
+
+`.dropdown_select(data)`
+
+`data` is string or integer type
+
+```pyhton
+se.Tag("select").dropdown_select("Canada")
+
+se.Tag("select").dropdown_select(23)
+```
+
+
 ## Getting and checking  WebDriver or WebElement(s) data
+
+<a name="testing"></a>
+## Testing and Cheking
+
+<a name="check_page"></a>
+### Basic page test `se.check_page()`
+
+One method for several checking actions:
+    
+    - wait and found element on the page  
+
+    - check page title
+
+    - check current url
+
+    - check all images
+
+    - check all links
+
+`se.check_page([data: dict])`
+
+- `data` - parameters of page tests in Python dictionary format `{key: value}`
+
+possible keys for parameters:
+    -`wait` - the key of the tuple locator value for wait and find WebElement
+    -`title` - the key of the string title for checking
+    -`url` - the key of the string url for checking wit current page url
+
+if `data` is absent by default the method will check Images and Links only
+```pyhon
+se.check_page({
+    "wait": (TAG, "h1"), 
+    "title": "Download Python | Python.org"
+    "url": "https://www.python.org/downloads/"
+    })
+
+# or by default check Images and Links only
+se.check_page()
+```
+
+
 
 ### `text()`  - Text of WebElement(s)
    
