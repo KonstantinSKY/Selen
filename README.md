@@ -33,8 +33,8 @@ this is a mini framework or an add-on for the selenium and unitest frameworks fo
  [Outputs and prints]
 
 
-## Getting started and:
-
+<a name="Started"></a>
+## Getting started
 <a name="Simple_Usage"></a>
 ### Simple Usage
 
