@@ -626,7 +626,7 @@ class Selen:
         data = {}
         for arg in args[:3]:
             if isinstance(arg, str):
-                url = self.url + arg
+                url = self.url.strip().rstrip("/") + "/" + arg.strip().lstrip("/")
             elif isinstance(arg, dict):
                 data = arg
         self.WD.set_page_load_timeout(timeout)
