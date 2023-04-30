@@ -648,14 +648,15 @@ class Selen:
         if data:
             self.check_page(data)
 
-    def check_page(self, data: dict):
+    def check_page(self, data=None):
         self.print("DIV", f'Checking current page {self.WD.current_url}')
-        if "wait" in data and data["wait"]:
-            self.Wait(data["wait"])
-        if "url" in data and data["url"]:
-            self.curr_url(data["url"])
-        if "title" in data and data["title"]:
-            self.title(data["title"])
+        if data:
+            if "wait" in data and data["wait"]:
+                self.Wait(data["wait"])
+            if "url" in data and data["url"]:
+                self.curr_url(data["url"])
+            if "title" in data and data["title"]:
+                self.title(data["title"])
         self.Img(check=True)
         self.check_links()
 
