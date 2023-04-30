@@ -18,7 +18,8 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 * [Example Explained](#Example_Explained)
 
 [Connection between Selen and Selenium WebDriver and Selenium WebElements](#Connection)
-* [Accessing Selenium WebDriver from Selen](#WebDriver)
+* [Using Selenium WebDriver from Selen](#WebDriver)
+* [Internal variables and attributes of a Selen instance](#Internal_variables)
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
 
@@ -67,7 +68,7 @@ and continue to use it and work with it as with regular Selenium, like
 
 `se.WD` is just link to Selenium WebDriver instance like `webdriver.Firefox()` 
 
-<a name="Internal Variables"></a>
+<a name="Internal_variables"></a>
 ### Internal variables or attributes of a Selen instance
 An instance of the Selenium class contains internal variables that can be changed by the instance itself during operation or by users
 
