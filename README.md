@@ -20,7 +20,9 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 [Connection between Selen and Selenium WebDriver and Selenium WebElements](#Connection)
 * [Using Selenium WebDriver from Selen](#WebDriver)
 * [Internal variables and attributes of a Selen instance](#Internal_variables)
-    - [`se.url`](#url)
+    - [`se.url` - the main Project URL storage ](#storage)
+    - [`se.elen` and `se.elems` - the current WebElement storages ](#elems)
+    - [`se.stat` - the current statisticts or statuses storage](#stat)
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
 
@@ -89,6 +91,12 @@ se.url = "http://www.python.org"
 # to use the variable:
 my_main_url = se.url 
 ```
+
+<a name="elems"></a>
+#### `se.elen` and `se.elems` - the WebElement storages
+
+<a name="stat"></a>
+#### `se.stat` - the current statisticts or statuses storage
 
 <a name="Get_method"></a>
 ### Getting the page data by URL with options
