@@ -3,16 +3,18 @@
 import json
 import hashlib
 import time
-from random import uniform
+from random import uniform, randint
 from collections import Counter
 import aiohttp
 import asyncio
-from aiohttp.client_exceptions import ClientConnectorError 
+from aiohttp.client_exceptions import ClientConnectorError
 import requests
-from selenium import webdriver
+from selenium import webdriver, common
 from selenium.common.exceptions import NoSuchElementException, \
     TimeoutException, ElementNotInteractableException, InvalidArgumentException
+
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
@@ -29,10 +31,11 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.opera import OperaDriverManager
 from seleniumwire import webdriver as SWWD
+
 # from security import COOKIES
 
 # from webdriver_manager.safari import SafariDriverManager
-__VERSION = '0.9.8'
+__VERSION = '0.9.9'
 
 COOKIES = []
 # Locator variables
@@ -57,11 +60,11 @@ class Selen:
 
         if wd == "Chrome":
             opts = webdriver.ChromeOptions()
-            opts.add_argument('--disable-blink-features=AutomationControlled')
+            # opts.add_argument('--disable-blink-features=AutomationControlled')
             if headless:
                 opts.add_argument('headless')
-            opts.add_argument('window-size=1600x2600')
-
+                opts.add_argument('window-size=1600x2600')
+            opts.add_argument('--disable-blink-features=AutomationControlled')
             self.WD = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
 
         elif wd == "Firefox":
@@ -156,7 +159,7 @@ class Selen:
             end = "\x1b[1m\x1b[33m.....WARN \x1b[0m"
         elif first == "DIV":
             fro = "\x1b[1m\x1b[36m% \x1b[0m"
-            div_line = "="*(150 - len(f"{args_str} {kwargs_str}"))
+            div_line = "=" * (150 - len(f"{args_str} {kwargs_str}"))
             end = f"\x1b[1m\x1b[36m {div_line} \x1b[0m"
         else:
             return
@@ -440,39 +443,58 @@ class Selen:
 
     # -------------- Functions for actions with found element(s) ----------------
     # Click chain function have 2 modes simple and with action chains with pause.
-    def click(self, action=False, pause=0):
-        if action:
-            self.__action_click(pause=pause)
-            self.print("Clicked in Action element:", self.elem)
-        else:
+    def click(self, mode='', action=False, pause=0):
+        print("mode", mode, type(mode))
+        if not mode and not action:
             try:
                 self.elem.click()
                 self.print("Clicked element:", self.elem)
             except ElementNotInteractableException:
-                self.assertion("FAIL", f'Cannot click, try to use ".click(action=True)", '
-                                       f'the Element:"{self.xpath_query()}"')
+                self.assertion("FAIL", f"""Cannot Click, try to use ".click(mode='action')", '
+                                       f' the Element:"{self.xpath_query()}""")
+
+        elif isinstance(mode, int) or isinstance(mode, float):  # click and hold
+            # self.__hold_click(hold=mode, pause=pause, move=elem)
+            pass
+
+        else:
+            try:
+                self.__action_click(mode=mode.lower(), pause=pause)
+                self.print(mode.upper(), "Action Clicked, element:", self.elem)
+            except:
+                self.assertion("FAIL", f"""Cannot Action {mode.upper()} Click the Element:"{self.xpath_query()}""")
         return self
 
-    # Context Click chain function with pause.
-    def context_click(self, pause=0):
-        self.__action_click(mode='context', pause=pause)
-        self.print("Context Clicked element:", self.elem)
+    def random_click(self, mode='', pause=0):
+        idx = randint(0, len(self.elems) - 1)
+        self.elem = self.elems[idx]
+        self.click(mode=mode, pause=pause)
         return self
 
-    # Double Click with action chains and pause.
-    def double_click(self, pause=0):
-        self.__action_click(mode='double', pause=pause)
-        self.print("Double Clicked element:", self.elem)
-        return self
+    # # Context Click chain function with pause.
+    # def context_click(self, pause=0):
+    #     self.__action_click(mode='context', pause=pause)
+    #     self.print("Context Clicked element:", self.elem)
+    #     return self
+    #
+    # # Double Click with action chains and pause.
+    # def double_click(self, pause=0):
+    #     self.__action_click(mode='double', pause=pause)
+    #     self.print("Double Clicked element:", self.elem)
+    #     return self
 
     # Service functions for any clicks
     def __action_click(self, mode='', pause=0):
+        print("mode", mode)
         self.AC.move_to_element(self.elem)
         if pause > 0:
             self.print("Pause before click, seconds:", pause)
             self.AC.pause(pause)
-        under = '_' if mode else ''
-        eval(f"self.AC.{mode}{under}click()")
+        mode = '' if mode == 'action' or not mode else mode + '_'
+
+        print("mode", mode)
+        eval(f"self.AC.{mode}click()")
+
         self.AC.perform()
 
     # Display hidden and invisible element
@@ -628,7 +650,7 @@ class Selen:
         data = {}
         for arg in args[:3]:
             if isinstance(arg, str):
-                url = self.url + arg.strip().strip("/") + "/"
+                url = url + arg.strip().strip("/") + "/"
             elif isinstance(arg, dict):
                 data = arg
         self.WD.set_page_load_timeout(timeout)
