@@ -35,7 +35,7 @@ from seleniumwire import webdriver as SWWD
 # from security import COOKIES
 
 # from webdriver_manager.safari import SafariDriverManager
-__VERSION = '0.9.9'
+__VERSION = '0.9.10'
 
 COOKIES = []
 # Locator variables
