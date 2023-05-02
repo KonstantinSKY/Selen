@@ -26,28 +26,48 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
     - [`se.url` - the main Project URL storage ](#storage)
     - [`se.elem` and `se.elems` - the current WebElement storages ](#elems)
     - [`se.stat` - the current statisticts or statuses storage](#stat)
-    - [The attributes available to locate elements on a page](#attr) 
+    - [The attributes available to locate elements on a page](#locatore) 
+    - [Keys attribues](#keys) 
 
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
-* [Page source](#PageSource)
+* [Page Source ! ](#PageSource)
+* [Page Title ! ](#PageSource)
+* [Page URL ! ](#PageSource)
+
 [Chains of Selen methods and actions with them](#chains)
 
 [Locating element and finding WebElements](#Locating)
 * [Setting locators in Selen](#locators)
-* [`Find()` anb `find()`](#find)
+* [`Find()` and `find()`](#find)
 
 [Actions with Page and WebElements](#actions)
-* []
+* [`click()` Different Clicks WebElemens with many options](#clicks)
+    - [regular click]
+    - [action click]
+    - [double click]
+    - [context click]
+    - [random click]
+* [`type()` Insert any text to WebElements] 
+* [`text()` Getting text from WebElements] 
+* [`dropdown_select()` insert any text to WebElements]
+    - [select by Value]
+    - [select by Index]
+    - [select by Text !]
+    - [Random select from dropdown]
+
 [Testing and checking](#testing)
 * [Basic page test `se.check_page()`](#check_page)
 * [Image tests](#images)
 * [Links (href) tests](#links)
 
+*[Outputs and prints](#outs)
+* [`out()`]
+* [`se.print`]
 
 
-**[Outputs and prints]
 
+[How to create testcases]
 
 <a name="Started"></a>
 ## Getting started
@@ -110,6 +130,7 @@ my_main_url = se.url
 <a name="stat"></a>
 #### `se.stat` - the current statisticts or statuses storage
 
+<a name="locators></a>
 #### The attributes available to locate elements on a page. 
 These are the attributes available and their Selenium equivalents
 ```python
@@ -123,6 +144,9 @@ CSS                         By.CSS_SELECTOR = "css selector"
 LINK                        By.LINK_TEXT = "link text"
 PART_LINK                   By.PARTIAL_LINK_TEXT = "partial link text" 
 ```
+
+<a name="keys></a>
+#### Keys attributes
 
 <a name="Get_method"></a>
 ### Getting the page data by URL with options
