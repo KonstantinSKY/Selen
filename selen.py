@@ -374,13 +374,6 @@ class Selen:
         self.contains(data, *idxs)
         return self
 
-    def __check_data_type(self, data, *args, message=''):
-        for arg in args:
-            if isinstance(data, arg):
-                return True
-        self.assertion("FAIL", f"{message}: Incorrect method parameters type {type(data)}, it can get: {args} only ")
-        return False
-
     # Selecting Element filter by contain data(text and attributes) from other element self.elem
     def contains(self, data, *idxs):
         if not self.__check_data_type(data, str, dict, message="contains()"): return
@@ -443,8 +436,11 @@ class Selen:
 
     # -------------- Functions for actions with found element(s) ----------------
     # Click chain function have 2 modes simple and with action chains with pause.
-    def click(self, mode='', action=False, pause=0):
-        print("mode", mode, type(mode))
+    def click(self, mode='', action=False, pause=0, random=False):
+        if random:
+            idx = randint(0, len(self.elems) - 1)
+            self.elem = self.elems[idx]
+
         if not mode and not action:
             try:
                 self.elem.click()
@@ -456,7 +452,6 @@ class Selen:
         elif isinstance(mode, int) or isinstance(mode, float):  # click and hold
             # self.__hold_click(hold=mode, pause=pause, move=elem)
             pass
-
         else:
             try:
                 self.__action_click(mode=mode.lower(), pause=pause)
@@ -465,34 +460,14 @@ class Selen:
                 self.assertion("FAIL", f"""Cannot Action {mode.upper()} Click the Element:"{self.xpath_query()}""")
         return self
 
-    def random_click(self, mode='', pause=0):
-        idx = randint(0, len(self.elems) - 1)
-        self.elem = self.elems[idx]
-        self.click(mode=mode, pause=pause)
-        return self
-
-    # # Context Click chain function with pause.
-    # def context_click(self, pause=0):
-    #     self.__action_click(mode='context', pause=pause)
-    #     self.print("Context Clicked element:", self.elem)
-    #     return self
-    #
-    # # Double Click with action chains and pause.
-    # def double_click(self, pause=0):
-    #     self.__action_click(mode='double', pause=pause)
-    #     self.print("Double Clicked element:", self.elem)
-    #     return self
-
-    # Service functions for any clicks
+    # Service functions for any action clicks
     def __action_click(self, mode='', pause=0):
-        print("mode", mode)
         self.AC.move_to_element(self.elem)
         if pause > 0:
             self.print("Pause before click, seconds:", pause)
             self.AC.pause(pause)
         mode = '' if mode == 'action' or not mode else mode + '_'
 
-        print("mode", mode)
         eval(f"self.AC.{mode}click()")
 
         self.AC.perform()
@@ -540,12 +515,19 @@ class Selen:
         self.elem.send_keys(text)
         return self
 
-    def dropdown_select(self, data):
-        self.__check_data_type(data, int, str, message="dropdown_select")
+    def dropdown_select(self, data=None):
         tag = self.elem.tag_name
         if tag != "select":
             self.assertion("FAIL", f"Cannot select from element with tag = <{tag}>, it works with <select>")
             return self
+
+        if not data:      # Get Random option
+            elems = self.elem.find_elements(By.TAG_NAME, "option")
+            elem = elems[randint(0, len(elems) - 1)]
+            data = elem.get_attribute("value")
+            self.print("OK", f"Random option, value: {data}, text: {elem.text}")
+
+        self.__check_data_type(data, int, str,  message="dropdown_select")
         dropdown = Select(self.elem)
         try:
             if isinstance(data, str):
@@ -643,6 +625,13 @@ class Selen:
         print("* Expected:", expect)
         self.assertion("FAIL", "Incorrect:", message)
         # self.output = self.Output("False")
+        return False
+
+    def __check_data_type(self, data, *args, message=''):
+        for arg in args:
+            if isinstance(data, arg):
+                return True
+        self.assertion("FAIL", f"{message}: Incorrect method parameters type {type(data)}, it can get: {args} only ")
         return False
 
     def get(self, *args, timeout=10):
