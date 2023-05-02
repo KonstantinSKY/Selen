@@ -52,7 +52,8 @@ l_h1 = (TAG, "h1")
 l_h2 = (TAG, "h2")
 l_a = (TAG, "a")
 l_input = (TAG, "input")
-
+# keys
+_RETURN = "return"
 
 class Selen:
 
