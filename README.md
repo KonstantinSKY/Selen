@@ -26,48 +26,60 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
     - [`se.url` - the main Project URL storage ](#storage)
     - [`se.elem` and `se.elems` - the current WebElement storages ](#elems)
     - [`se.stat` - the current statisticts or statuses storage](#stat)
+    - [Config variables](#config)
     - [The attributes available to locate elements on a page](#locatore) 
     - [Keys attribues](#keys) 
 
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
-* [Page Source ! ](#PageSource)
-* [Page Title ! ](#PageSource)
-* [Page URL ! ](#PageSource)
+* [`page_src()`Page Source ! ](#PageSource)
+* [`Title()`Page Title ](#PageSource)
+* [`curr_url()`Page URL ](#PageSource)
+* [`se.sleep()` Additional sleep for any delays](#sleep)
 
 [Chains of Selen methods and actions with them](#chains)
+[The difference between methods with names starts with a capital and the same but with a small one](#difference)
 
 [Locating element and finding WebElements](#Locating)
-* [Setting locators in Selen](#locators)
+* [Locators in Selen](#locators)
+* [`Wait`]
+* [`Find()` and `find()`](#find)
+* [`Find()` and `find()`](#find)
+* [`Find()` and `find()`](#find)
+* [`Find()` and `find()`](#find)
+* [`Find()` and `find()`](#find)
+* [`Find()` and `find()`](#find)
+* [`Find()` and `find()`](#find)
 * [`Find()` and `find()`](#find)
 
 [Actions with Page and WebElements](#actions)
 * [`click()` Different Clicks WebElemens with many options](#clicks)
-    - [regular click]
-    - [action click]
-    - [double click]
-    - [context click]
-    - [random click]
-* [`type()` Insert any text to WebElements] 
-* [`text()` Getting text from WebElements] 
-* [`dropdown_select()` insert any text to WebElements]
-    - [select by Value]
-    - [select by Index]
-    - [select by Text !]
-    - [Random select from dropdown]
-
+    - [regular click](#1)
+    - [action click](#1)
+    - [double click](#1)
+    - [context click](#1)
+    - [random click](#1)
+* [`type()` Insert any text to WebElements](#type) 
+* [`text()` Getting text from WebElements](#text)
+* [`dropdown_select()` insert any text to WebElements](#dropdown)
+    - [select by Value](#dd_value)
+    - [select by Index](#dd_index)
+    - [select by Text !](#dd_text)
+    - [Random select from dropdown](#dd_random)
+* []
 [Testing and checking](#testing)
+* [`assertion`]
 * [Basic page test `se.check_page()`](#check_page)
 * [Image tests](#images)
 * [Links (href) tests](#links)
+* [`attr()` checking attributes of WebElements](#attr)
 
-*[Outputs and prints](#outs)
+
+[Outputs and prints](#outs)
 * [`out()`]
 * [`se.print`]
 
-
-
-[How to create testcases]
+[How to create testcases](#testcases)
 
 <a name="Started"></a>
 ## Getting started
