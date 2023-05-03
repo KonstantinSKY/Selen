@@ -12,23 +12,26 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 - error reduction
 
 ## Table of contents
-[Instalation](#Instalation)
-* [Get all needed Python modules with requirements.txt](#requirements)
+[Installation](#Installation)
+
+* [Install all needed Python modules with `requirements.txt`](#requirements)
 * [Automatic getting common WebDrivers](#automatic)
 
 [Getting Started](#Started)
+
 * [Simple Usage](#Simple_Usage)
 * [Example Explained](#Example_Explained)
 
 [Connection between Selen and Selenium WebDriver and Selenium WebElements](#Connection)
+
 * [Using Selenium WebDriver from Selen](#WebDriver)
 * [Internal variables and attributes of a Selen instance](#Internal_variables)
     - [`se.url` - the main Project URL storage ](#storage)
     - [`se.elem` and `se.elems` - the current WebElement storages ](#elems)
     - [`se.stat` - the current statisticts or statuses storage](#stat)
-    - [Config variables](#config)
+    - [Configure variables](#config)
     - [The attributes available to locate elements on a page](#locatore) 
-    - [Keys attribues](#keys) 
+    - [Keys attributes](#keys) 
 
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
@@ -42,10 +45,10 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 
 [Locating element and finding WebElements](#Locating)
 * [Locators in Selen](#locators)
-* [`Wait`]
-* [`Find()`     and `find()` finding by any lictors](#find)
+* [`Wait` Waiting for WebElement present on the page](#wait)
+* [`Find()`     and `find()` finding by any locators](#find)
 * [`Tag()`      and `tag()` finding by Tag name](#tag)
-* [`Cls()`      and `cls()`findig by class name attribute ] (#class)
+* [`Cls()`      and `cls()`finding by class name attribute ] (#class)
 * [`Xpath()`    and `xpath()` by XPath query](#xpath)
 * [`Contains()` and `Contains()`by contains of WebElement](#contains)
 * [`Img()`      and `Img()`finding and checking Images](#Img)
@@ -80,10 +83,24 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 * [`se.print`]
 
 [How to create testcases](#testcases)
+<!-- +++++++++++++++++++++++++++++++++S+++++++++++++++++CONTENTS+++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-<a name="Started"></a>
+<a name="Installation"></a> 
+## Installation
+
+<a name="requirements"></a> 
+
+### Install all needed Python modules with `requirements.txt`
+
+<a name="automatic"></a> 
+
+### Automatic getting common WebDrivers
+
+<a name="Started"></a> <!-- ==================================== Getting started ============================== -->
 ## Getting started
-<a name="Simple_Usage"></a>
+
+<a name="Simple_Usage"></a>  <!-- ==================================== Simple Usage ============================== -->
+
 ### Simple Usage
 If you have installed Selen Python module with bindings and Selenium Python bindings, you can start using it like this.
 ```python
@@ -95,15 +112,15 @@ se.title("Pyhton")
 se.Find(NAME, "q").type("pycon").key(RETURN)
 se.page_src("No result found")
 ```
-
+### Example Explained
 
 ## Connection between Selen and Selenium WebDriver and Selenium WebElements
 Selen is a class that creates its own instances.
 
 `se = Selen("Chrome")` or `se = Selen("Firefox", url="http://www.python.org")`
 
-<a name="WebDriver"></a>
-### Using Selenium WebDriver from Selen
+<a name="WebDriver"></a> <!-- === Calling and Using regular Selenium WebDriver from Selen ======================== -->
+### Calling and Using regular Selenium WebDriver from Selen
 During initialization of instance, Selen creates a Selenium driver inside it. 
 You can call the WebDriver it directly
 
@@ -115,7 +132,7 @@ and continue to use it and work with it as with regular Selenium, like
 
 `se.WD` is just link to Selenium WebDriver instance like `webdriver.Firefox()` 
 
-<a name="Internal_variables"></a>
+<a name="Internal_variables"></a> 
 ### Internal variables or attributes of a Selen instance
 An instance of the Selenium class contains internal variables that can be changed by the instance itself during operation or by users
 
@@ -137,13 +154,21 @@ my_main_url = se.url
 ```
 
 <a name="elems"></a>
-#### `se.elem` and `se.elems` - the WebElement storages
+#### `se.elem` and `se.elems` - the Web Elements storages
+
+```py
+
+```
+
+
 
 <a name="stat"></a>
+
 #### `se.stat` - the current statisticts or statuses storage
 
-<a name="locators></a>
+<a name="locators"></a>
 #### The attributes available to locate elements on a page. 
+
 These are the attributes available and their Selenium equivalents
 ```python
  Selen                       Selenium
@@ -157,8 +182,17 @@ LINK                        By.LINK_TEXT = "link text"
 PART_LINK                   By.PARTIAL_LINK_TEXT = "partial link text" 
 ```
 
-<a name="keys></a>
-#### Keys attributes
+
+<a name="keys"></a>
+#### Configure instance attributes
+`se.ok_assert`
+
+`se.ok_print`
+
+<a name="keys"></a>
+
+#### Keys attributes for call key pressing
+
 
 <a name="Get_method"></a>
 ### Getting the page data by URL with options
@@ -200,10 +234,134 @@ se.get("downloads",{
 ```
 Try it yourself!
 
-<a name="Find_methods"></a>
-## Methods for find of WebElements
+<a name="WebElements"></a>
+### WEB Elements, Assigning an element or elements to a variables 
+The ways of assigning elements to variables in Selen and Selenium are different
+
+Selenium Example:
+```python
+# one_element is instance of WebElement
+one_element = driver.find_element(By.XPATH, '//button[text()="Some text"]')
+
+# many_elements is list (array) of instances of WebElement
+many_elements = driver.find_elements(By.XPATH, '//button')
+```
+Selen Example:
+```python
+# one_element is instance of WebElement
+one_element = se.Find(XPATH, '//button[text()="Some text"]').elem
+
+# many_elements is list (array) of instances of WebElement
+many_elements = se.Find(XPATH, '//button').elems
+```
+`Find` and other methods of finding WebElements and other similar methods return `one` WebElement and `many` WebElements at the same time and stores them in internal variables: `se.elem` and `se.elems`
+
+They will be available by these names and it will also be possible to perform some actions with them until another method(s) saves new data there
+
+All  searching methods always find a array of WebElements and gets a single WebWlement as the first element of the array
+
+`se.elem == se.elems[0]`
+
+### Chains of Selen methods and actions with them
+Almost all methods of finding WebElements and actions on them can be assembled logical chains of code
+
+Even if the code chain in one line getting the end You can call next methods and actions on the last found elements can be continued in a new line, because these elements are stored in the variables: `se.elen` and `se.elems` 
+Example:
+```python
+email="email@gmail.com"
+se.Find(NAME, "email").type(email).sleep(0.2, 1).attr('value', email).parent(2).tag("span").attr('class', 'validation_status_ok')
+
+```
+The same code results:
+```python
+email = "email@email.com"
+se.Find(NAME, "email").type(email).sleep(0.2, 1).attr('value', "email")
+se.parent(2).tag("span").attr('class', 'validation_status_ok')
+#or
+se.Find(NAME, "email")
+se.type(email).
+se.sleep(0.2, 1)
+se.attr('value', email)
+se.parent(2)
+se.tag("span")
+se.attr('class', 'validation_status_ok')
+```
+This code does next steps:
+- found WebElement by attribute `NAME="email"`
+- type text from the `email` variable to the WebElement
+- random delay from 0.2 to 1 seconds
+- check for new WebElement attribute `'value'= email`
+- find new parrent element to 2 levels up
+- find element by Tag `span`
+- check attribute `'class' = 'validation_status_ok'`
+
+<a name="Locating"></a>
+## Locating and finding of WebElements
+
+<a name="Locating"></a>
+### Locators and Simplified adding locators to methods by several variants
+In usual Selenium Was like:
+```python
+driver.find_element(By.XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
+driver.find_element(By.CLASS_NAME, "Login_submit_wrapper__2-PYe")
+
+#or
+driver.find_element("xpath", "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
+driver.find_element("class name", "Login_submit_wrapper__2-PYe")
+
+#or with locator variables
+xpath_locator = ("xpath", "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
+class_locator = ("class_name", "Login_submit_wrapper__2-PYe")
+
+driver.find_element(*xpath_locator)
+driver.find_element(class_locator[0], class_locator[1])
+```
+With Selen is:
+```python
+se.Find(XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
+se.Find(CLASS, "Login_submit_wrapper__2-PYe")
+
+#or with locator variables
+xpath_locator = (XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
+class_locator = (CLASS, "Login_submit_wrapper__2-PYe")
+
+se.Find(xpath_locator)
+se.Find(class_locator)
+```
+## Findind by locators with indexes of element in array of elements in `se.elems`
+Sometimes we need to find a lot of elements then select one or more of them by index and continue searching inside it
+
+In Selenium: 
+```python
+driver.find_elements(By.XPATH, "//xpath string...")[3].find_element(By.CLASS_NAME, "Login_submit_wrapper__2-PYe")
+```
+In Selen
+```python
+se.Find(XPATH, "//xpath string...", 3).find(CLASS, "Login_submit_wrapper__2-PYe")
+or 
+se.Find((XPATH, "//xpath string...", 3), (CLASS, "Login_submit_wrapper__2-PYe"))
+```
+
+as well we can select WebElement any set of indexes
+```Python
+
+se.Find((XPATH, "//xpath string...", 0, 3, 5, ...), (CLASS, "Login_submit_wrapper__2-PYe"))
+
+```
+So, the full rule of using `Find` and `find` is:
+
+`Find(locator, [locators])`
+
+`find(locator, [locators])`
+
+And rule of one locator
+`locator = ('BY', content, [indexes ..])`
+
+- this way is suitable and can be used in any finding operator
+
 
 ### New find method and simplified adding locators as method arguments<name="Find">
+<a name="Locatiing"></a>
 
 In Selenium, it was like this:
 ```python
@@ -233,34 +391,6 @@ se.Find(CSS, "css selector")
 
 - -`se` is short from `self`
 
-### Simplified adding locators to methods by several variants
-In usual Selenium Was like:
-```python
-driver.find_element(By.XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-driver.find_element(By.CLASS_NAME, "Login_submit_wrapper__2-PYe")
-
-#or
-driver.find_element("xpath", "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-driver.find_element("class name", "Login_submit_wrapper__2-PYe")
-
-#or with locator variables
-xpath_locator = ("xpath", "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-class_locator = ("class_name", "Login_submit_wrapper__2-PYe")
-
-driver.find_element(*xpath_locator)
-driver.find_element(class_locator[0], class_locator[1])
-```
-With Selen is:
-```python
-se.Find(XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-se.Find(CLASS, "Login_submit_wrapper__2-PYe")
-
-#or with locator variables
-xpath_locator = (XPATH, "//body/div[@id='fb-root']/div[@id='root']/div[1]/div[1]/div[2]/div[1]")
-class_locator = (CLASS, "Login_submit_wrapper__2-PYe")
-
-se.Find(xpath_locator)
-se.Find(class_locator)
 ```
 ## Principles and rules of the Selen using
 
@@ -322,66 +452,7 @@ se.Find(locators, xpath_locator, (TAG, "a"))
 se.Find((TAG, "a"), xpath_locators, locators)
 # ! Any combinations as You wish
 ```
-### Assigning an element or elements to a variables 
-The ways of assigning elements to variables in Selen and Selenium are different
 
-Selenium Example:
-```python
-# one_element is instance of WebElement
-one_element = driver.find_element(By.XPATH, '//button[text()="Some text"]')
-
-# many_elements is list (array) of instances of WebElement
-many_elements = driver.find_elements(By.XPATH, '//button')
-```
-Selen Example:
-```python
-# one_element is instance of WebElement
-one_element = se.Find(XPATH, '//button[text()="Some text"]').elem
-
-# many_elements is list (array) of instances of WebElement
-many_elements = se.Find(XPATH, '//button').elems
-```
-`Find` and other methods of finding WebElements and other similar methods return `one` WebElement and `many` WebElements at the same time and stores them in internal variables: `se.elem` and `se.elems`
-
-They will be available by these names and it will also be possible to perform some actions with them until another method(s) saves new data there
-
-All  searching methods always find a array of WebElements and gets a single WebWlement as the first element of the array
-
-`se.elem == se.elems[0]`
-
-
-### Chains of Selen methods and actions with them
-Almost all methods of finding WebElements and actions on them can be assembled logical chains of code
-
-Even if the code chain in one line getting the end You can call next methods and actions on the last found elements can be continued in a new line, because these elements are stored in the variables: `se.elen` and `se.elems` 
-Example:
-```python
-email="email@gmail.com"
-se.Find(NAME, "email").type(email).sleep(0.2, 1).attr('value', email).parent(2).tag("span").attr('class', 'validation_status_ok')
-
-```
-The same code results:
-```python
-email = "email@email.com"
-se.Find(NAME, "email").type(email).sleep(0.2, 1).attr('value', "email")
-se.parent(2).tag("span").attr('class', 'validation_status_ok')
-#or
-se.Find(NAME, "email")
-se.type(email).
-se.sleep(0.2, 1)
-se.attr('value', email)
-se.parent(2)
-se.tag("span")
-se.attr('class', 'validation_status_ok')
-```
-This code does next steps:
-- found WebElement by attribute `NAME="email"`
-- type text from the `email` variable to the WebElement
-- random delay from 0.2 to 1 seconds
-- check for new WebElement attribute `'value'= email`
-- find new parrent element to 2 levels up
-- find element by Tag `span`
-- check attribute `'class' = 'validation_status_ok'`
 
 ## Findind by locators with indexes of element in array of elements in `se.elems`
 Sometimes we need to find a lot of elements then select one or more of them by index and continue searching inside it
@@ -475,19 +546,19 @@ se.Wait((TAG, "a"), xpath_locators, locators)
 ### Methods `Tag()` and `tag()` finding element(s) only by Tag Name
 
     `Tag("tag name", [ index, index2, .., index n ])`
-
+    
     `tag("tag name", [ index, index2, .., index n ])`
 
 ### Methods `Cls()` and `cls()` finding element(s) only by Class Name
 
     `Cls("class name",  [ index, index2, .., index n ])`
-
+    
     `cls("class name", [ index, index2, .., index n ])`
 
 ### Methods `Xpath()` and `xpath()` finding element(s) only by xpath
 
     `Xpath("xpath query", [ index, index2, .., index n ])`
-
+    
     `xpath("xpath query", [ index, index2, .., index n ])`
 
 ### Methods `Id()`  finding element only by ID
@@ -495,15 +566,15 @@ se.Wait((TAG, "a"), xpath_locators, locators)
     `Id("ID", [ index, index2, .., index n ])`
 
 ### Metods `Contains()` and `contains()` - finding elements containing a specific date
-    
-    `Contains(data, [ index, index2, .., index n ])` 
 
+    `Contains(data, [ index, index2, .., index n ])` 
+    
     `contains(data, [ index, index2, .., index n ])`
 
 `data` - can be text of WebElement (str) or attribute of WebElement (dict = '{"attribute name": "attribute value"}') 
 
 ### Metods `Img()` and `img()` - finding elements containing a images and pictures
-    
+
     `Img([ index, index2, .., index n ][check=bool])` 
 - Find images inside All Page (WebDriver). 
 
@@ -548,7 +619,7 @@ Image: xpath: /html/body[1]/div[2]/span[1]/img[1]
 
 
 ### `parents()` jump to the parent element by a different number of levels
-    
+
     `parents([level number])`
 
 By default, it jumps up for 1 level
@@ -557,9 +628,9 @@ By default, it jumps up for 1 level
 ## Actions with elements 
 
 ### `click()` click and action click in one
-    
+
     `click([action=bool, pause=second(int) ])`
-    
+
 By defaulf `action=False` `pause=0`
 
 In this case `action=False` - a simple click
@@ -578,7 +649,7 @@ In this case `action=True` - a click through the Selenium action.chain
     `context_click([pause=second(int)])`  
 
 ### `type()` - inserts text into the selected WebWlement
-    
+
     `type("Text")`
 Example: Checking if the Tag "h2" contains text "Log in" 
 ```python
@@ -679,28 +750,28 @@ se.check_page()
 ```
 
 ### `text()`  - Text of WebElement(s)
-   
+
     `text(["text": str])`
 
 `text: str` - is optional parameter
 
 - if no text argument is used here, that the Method returns text of the WebElement
-    
+  
 - if a text argument is added in brackets, then this method compares the text arguments in brackets with the text inside the WebElement and checks
 
 ### `title()` - The Title of opened page
-    
+
     `title(["text": str])`
 
 - if no text argument is used here, that the Method returns the Title  of Web PageWeb.
-    
+  
 - if a text argument is added in brackets, then this method compares the text arguments in brackets with the Title of current WebPage and checks
 
 ### `curr_url()` - The Current URL of opened page
 
     `curr_url(["text": str])`
 - if no text argument is used here, that the Method returns URL of curent opened page
-    
+  
 - if a text argument is added in brackets, then this method compares the text arguments in brackets with the URL of The opened  the WebPage and checks
 
 
@@ -720,7 +791,7 @@ XPath: /html/body[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/form[1]/div[1]/di
 
     `count([number: int])`
 - if no text argument is used here, that the Method returns count of the WebElements in `se.elems`. In this case, this method is final and the chain of methods cannot continue
-    
+  
 - if an integer argument is added in brackets, then this method compares the number with the real counts of the selected WebElement and checks
 
 ### `attr()`  - Get or check of WebElements attributes
@@ -732,7 +803,7 @@ This method checks if the element contains the specified attribute
 - if the attribute is exists and `value` is present, it checks if the attribute is equal to this value. 
 
 - if the value is not specified, then the method returns the attribute value. In this case, this method is final and the chain of methods cannot continue
- 
+
 
 ### `all_attrs()` - Get all attributes of WebElement
 
