@@ -2,16 +2,22 @@
 ## Easier and shorter than clear Selenium
 this is a Python mini framework or an add-on for the Selenium and unitest frameworks
 
-## Basic goals
+## Introduction
 
-- making it easier to write code of tests
-- automatic update of web drivers for different browsers 
-- improving code readability
-- to reduce the amount of code written
-- accelerating the development of tests based on selenium and unittest frameworks
-- error reduction
+Selenium WebDriver is a popular tool for automating web browser interactions, allowing testers and developers to simulate user behavior and test website functionality. However, working with Selenium WebDriver can be challenging, especially for those who are new to it. The process of finding web elements, waiting for page loads, and performing actions on those elements can be time-consuming and prone to errors.
+
+This is where Selen comes in. Selen is a Python library that simplifies the use of Selenium WebDriver. Its basic goals include making it easier to write code for tests, improving code readability, reducing the amount of code written, accelerating the development of tests based on Selenium and unittest frameworks, and reducing errors.
+
+Selen builds on top of Selenium WebDriver, providing a higher-level API that makes it easier to interact with web pages. With Selen, you can quickly automate browser interactions, navigate pages, fill out forms, click buttons, and much more. You can also easily locate web elements using a wide range of locator strategies, such as ID, name, class name, XPath, and CSS selector. Additionally, Selen provides a variety of convenience methods for working with web elements, such as clicking, typing, selecting options from dropdowns, and checking attributes.
+
+Selen also simplifies the process of setting up Selenium WebDriver. It automatically updates the appropriate driver for the browser you want to use, so you don't have to worry about downloading and setting up drivers yourself.
+
+In this guide, we'll explore the basics of using Selen, including how to install it, how to use its methods and attributes, and how to interact with web elements using Selen. By the end of this guide, you'll have a good understanding of how to use Selen to automate web browser interactions with ease.
 
 ## Table of contents
+
+Introduction
+
 [Installation](#Installation)
 
 * [Install all needed Python modules with `requirements.txt`](#requirements)
@@ -22,21 +28,21 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 * [Simple Usage](#Simple_Usage)
 * [Example Explained](#Example_Explained)
 
-[Connection between Selen and Selenium WebDriver and Selenium WebElements](#Connection)
+[Connection between Selen and Selenium WebDriver and Selenium WebElements](#connection)
 
 * [Using Selenium WebDriver from Selen](#WebDriver)
 * [Internal variables and attributes of a Selen instance](#Internal_variables)
-    - [`se.url` - the main Project URL storage ](#storage)
-    - [`se.elem` and `se.elems` - the current WebElement storages ](#elems)
-    - [`se.stat` - the current statisticts or statuses storage](#stat)
+    - [`.url` - the main Project URL storage ](#storage)
+    - [`.elem` and `se.elems` - the current WebElement storages ](#elems)
+    - [`.stat` - the current statisticts or statuses storage](#stat)
     - [Configure variables](#config)
     - [The attributes available to locate elements on a page](#locatore) 
     - [Keys attributes](#keys) 
 
 * [Getting the page data by URL with options](#Get_method)
 * [WEB elements](#WebElements)
-* [`page_src()`Page Source ! ](#PageSource)
-* [`Title()`Page Title ](#PageSource)
+* [`.page_src()`Page Source ! ](#PageSource)
+* [`title()`Page Title ](#PageSource)
 * [`curr_url()`Page URL ](#PageSource)
 * [`se.sleep()` Additional sleep for any delays](#sleep)
 
@@ -47,8 +53,8 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 * [Locators in Selen](#locators)
 * [`Wait` Waiting for WebElement present on the page](#wait)
 * [`Find()`     and `find()` finding by any locators](#find)
-* [`Tag()`      and `tag()` finding by Tag name](#tag)
-* [`Cls()`      and `cls()`finding by class name attribute ] (#class)
+* [`Tag()`     and `tag()` finding by Tag name](#tag)
+* [`Cls()`      and `cls()`finding by class name attribute] (#class)
 * [`Xpath()`    and `xpath()` by XPath query](#xpath)
 * [`Contains()` and `Contains()`by contains of WebElement](#contains)
 * [`Img()`      and `Img()`finding and checking Images](#Img)
@@ -56,6 +62,7 @@ this is a Python mini framework or an add-on for the Selenium and unitest framew
 * [`Parent()` finding parent WebElement](#parent)
 
 [Actions with Page and WebElements](#actions)
+
 * [`click()` Different Clicks WebElemens with many options](#clicks)
     - [regular click](#1)
     - [action click](#1)
@@ -114,12 +121,34 @@ se.page_src("No result found")
 ```
 ### Example Explained
 
+<a name="connection"></a>  <!-- ==================================== Simple Usage ============================== -->
+
 ## Connection between Selen and Selenium WebDriver and Selenium WebElements
-Selen is a class that creates its own instances.
+The Selen is a class that creates its own instances with Methods and Attributes (instance variables).
+
+`Selen([Browser: str], [url=Project_URL: str])`
+
+Arguments:
+
+`Browser`  -  The available browsers (by default is "Chrome" if the argument is empty):
+
+- "Chrome"
+- "Firefox"
+- "Edge"
+- "Opera"
+
+`url` is optional argument to set attribute `url` as the main Project url
+
+Creating instances examples:  
 
 `se = Selen("Chrome")` or `se = Selen("Firefox", url="http://www.python.org")`
 
+Arguments:
+
+
+
 <a name="WebDriver"></a> <!-- === Calling and Using regular Selenium WebDriver from Selen ======================== -->
+
 ### Calling and Using regular Selenium WebDriver from Selen
 During initialization of instance, Selen creates a Selenium driver inside it. 
 You can call the WebDriver it directly
