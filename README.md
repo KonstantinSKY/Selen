@@ -76,7 +76,10 @@ Introduction
     - [select by Index](#dd_index)
     - [select by Text !](#dd_text)
     - [Random select from dropdown](#dd_random)
-* []
+* [`dropdown_multiselect()`](#multi)
+    - [select by Value](#dms_value)
+    - [select by Index](#dms_insex)
+    - [random select](#dms_radom)
 [Testing and checking](#testing)
 * [`assertion`]
 * [Basic page test `se.check_page()`](#check_page)
@@ -141,10 +144,9 @@ Arguments:
 
 Creating instances examples:  
 
-`se = Selen("Chrome")` or `se = Selen("Firefox", url="http://www.python.org")`
+`se = Selen("Chrome")`
 
-Arguments:
-
+`se = Selen("Firefox", url="http://www.python.org")`
 
 
 <a name="WebDriver"></a> <!-- === Calling and Using regular Selenium WebDriver from Selen ======================== -->
