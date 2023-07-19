@@ -4,12 +4,13 @@
 # Just import all from selen module
 from selen import *
 
-# file
-from security_template import EMAIL, PASSW
 
+# import you credential from security file  of your project and uncomment next line
+# from security import *
 
-# Class of project
-class iBench(Selen):
+# Class of project inherits Selen class, rename it by your Project
+
+class Project(Selen):
 
     def __init__(se, wd="Chrome"):
         super().__init__(wd)
@@ -660,7 +661,11 @@ class iBench(Selen):
         pass
 
 
+# You can start the file, and you can check your method here
 if __name__ == "__main__":
+
+
+    
     # iBench('Edge').foot_nav_menu()
     # iBench().login()
     # iBench().head_nav_menu()
