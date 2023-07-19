@@ -5,7 +5,7 @@
 from selen import *
 
 # file
-from security import EMAIL, PASSW
+from security_template import EMAIL, PASSW
 
 
 # Class of project
