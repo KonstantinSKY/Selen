@@ -26,6 +26,12 @@ class Project(Selen):
     # Example of home page of testing website
     def home(se):
         se.WD.get(se.url)  # Get page from WD
+        se.Wait(TAG, "title")
+
+        se.title("Selenium Test Pages")
+        # se.check_page()
+        se.check_links()
+
         # Wait element and check inner text
         # se.Wait(l_h1).text('Looking for a developers, UX/UI designer, QA or DevOps...or development agency?')
         # se.title('iBench - real-time developers Hiring')  # Check title
@@ -42,7 +48,7 @@ class Project(Selen):
     
 # You can start the file, and you can check your method here
 if __name__ == "__main__":
-    project = Project()
+    project = Project("Firefox")
     project.home()
     project.test_name()
     print('FINISHED')
