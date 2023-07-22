@@ -27,7 +27,7 @@ class FirefoxSearch(unittest.TestCase):
         opts.add_argument('--disable-extensions')
         self.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
 
-        # self.driver.maximize_window()
+
 
     def test_amazon_create_login(self):
         self.driver.get("https://testpages.herokuapp.com/")
