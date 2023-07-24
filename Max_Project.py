@@ -27,14 +27,19 @@ class FirefoxSearch(unittest.TestCase):
         opts.add_argument('--disable-extensions')
         self.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
 
-
-
     def test_amazon_create_login(self):
-        self.driver.get("https://testpages.herokuapp.com/")
-        href_elements = self.driver.find_elements(By.TAG_NAME,"a")
-        for element in href_elements:
-            print(element.text)
-            print(element.get_attribute("href"))
+        driver = self.driver
+        driver.get("https://testpages.herokuapp.com/")
+        driver.find_elements(By.ID, "jsattributes")
+        for i in range(1, 99):
+            elem = driver.find_elements(By.TAG_NAME, 'p')
+        if elem.__getattribute__('nextid') == i:
+            driver.find_elements(By.CLASS_NAME, "styled-click-button").click() #button
+
+        # href_elements = self.driver.find_elements(By.TAG_NAME,"a")
+        # for element in href_elements:
+        #     print(element.text)
+        #     print(element.get_attribute("href"))
 
         time.sleep(10)
 
