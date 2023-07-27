@@ -75,7 +75,7 @@ class FirefoxSearch(unittest.TestCase):
         time.sleep(10)
     def test_Dynamic_HTML_TABLE_Tag(self):
         driver = self.driver
-        wait = WebDriverWait(driver, 5)
+
         driver.get("https://testpages.herokuapp.com/")
         driver.find_element(By.ID, "dynamictablestest").click()  # next page Dynamic Table Test Page
         time.sleep(5)
@@ -95,19 +95,82 @@ class FirefoxSearch(unittest.TestCase):
         else:
             print('"Account registration" page URL is wrong:', driver.current_url)
         #     #check if header h1 text is correct
-        # text_website = driver.find_elements(By.XPATH, "//h1[contains(.,'Dynamic HTML TABLE Tag')]").text
-        # text_expected = "Dynamic HTML TABLE Tag"
-        # if text_website == text_expected:
-        #     try:
-        #         assert text_website == text_expected
-        #         print("Paragraph text is correct. Current text is:", text_website)
-        #     except AssertionError:
-        #         print("Paragraph text is different. Current text is:", text_website)
+        text_website = driver.find_element(By.XPATH, "//h1[contains(.,'Dynamic HTML TABLE Tag')]").text
+        text_expected = "Dynamic HTML TABLE Tag"
+        if text_website == text_expected:
+            try:
+                assert text_website == text_expected
+                print("Paragraph text is correct. Current text is:", text_website)
+            except AssertionError:
+                print("Paragraph text is different. Current text is:", text_website)
         driver.find_element(By.TAG_NAME, "p") # checking first paragraph
         driver.find_element(By.ID, "refreshtable") # refresh table button
         driver.find_element(By.ID, "caption") # placeholder Caption
         driver.find_element(By.ID, "tableid") # placeholder Id
-        #driver.find_elements(By.TAG_NAME, "a") как найти все href в теге а
+
+
+        elems = driver.find_elements(By.TAG_NAME, "a")
+        print(type(elems))
+        print(elems)
+
+
+        for elem in elems:
+
+            xpath = driver.execute_script("""
+                    var xpath = "";
+                    var containerElem = document.documentElement;
+                    var elem = arguments[0];
+
+                    while (elem !== containerElem) {
+                        var index = 0;
+                        var sibling = elem.previousSibling;
+
+                        while (sibling) {
+                            if (sibling.nodeType === Node.ELEMENT_NODE && 
+                                sibling.nodeName.toLowerCase() === elem.nodeName.toLowerCase()) {
+                                index++;
+                            }
+                            sibling = sibling.previousSibling;
+                        }
+                        xpath = "/" + elem.nodeName.toLowerCase() + "[" + (index + 1) + "]" + xpath;
+                        elem = elem.parentNode;
+                    }
+                    return "/" + containerElem.nodeName.toLowerCase() + xpath;
+            """, elem)  # Checking for correct XPATH
+            print("xpath", xpath)
+            if elem.get_attribute("hrefd"):
+                print("OK for Elements", elem.text)
+
+            else:
+                print("NOT OK  for Element", elem.text)
+
+        driver.find_element(By.TAG_NAME, "summary").click() # Table data
+        jsondata = driver.find_element(By.ID, "jsondata")
+        jsondata.clear()# placeholder with json textarea
+        jsondata.send_keys('[{"name" : "Bob", "age" : 20}, {"name": "George", "age" : 42}, {"name" : "Max", "age" : 20}]')
+        driver.find_element(By.ID, "refreshtable").click()
+        table_names = driver.find_elements(By.TAG_NAME, "td")
+
+        for name in table_names:
+            if name.text == "Bob" 20:
+                print("OK")
+            else:
+                print("Not OK")
+        for name in table_names:
+            if name.text == "George" and 42:
+                print("OK")
+            else:
+                print("Not OK")
+        for name in table_names:
+            if name.text == "Max" and 20:
+                print("OK")
+            else:
+                print("Not OK")
+
+
+
+
+
 
 
     def tearDown(self):
