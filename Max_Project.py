@@ -149,23 +149,34 @@ class FirefoxSearch(unittest.TestCase):
         jsondata.clear()# placeholder with json textarea
         jsondata.send_keys('[{"name" : "Bob", "age" : 20}, {"name": "George", "age" : 42}, {"name" : "Max", "age" : 20}]')
         driver.find_element(By.ID, "refreshtable").click()
-        table_names = driver.find_elements(By.TAG_NAME, "td")
 
-        for name in table_names:
-            if name.text == "Bob" 20:
-                print("OK")
-            else:
-                print("Not OK")
-        for name in table_names:
-            if name.text == "George" and 42:
-                print("OK")
-            else:
-                print("Not OK")
-        for name in table_names:
-            if name.text == "Max" and 20:
-                print("OK")
-            else:
-                print("Not OK")
+    def test_Alert_Box_Examples(self):
+        driver = self.driver
+        driver.get("https://testpages.herokuapp.com/")
+        driver.find_element(By.ID, "alerttest").click()
+        text_website = driver.find_element(By.TAG_NAME, "h1").text
+        text_expected = "Alert Box Examples" # удали чтонибудь
+        if text_website == text_expected:
+            try:
+                assert text_website == text_expected
+                print("Paragraph text is correct. Current text is:", text_website)
+            except AssertionError:
+                print("Paragraph text is different. Current text is:", text_website)
+        driver.find_element(By.ID, "alertexamples") # Button - Show alert box
+        driver.find_element(By.ID, "confirmexample") # Button - Show confirm box
+        driver.find_element(By.ID, "promptexample") # Button - Show prompt box
+        paragraph_website = driver.find_element(By.TAG_NAME, "p").text # не получается
+        paragraph_expected = "There are three main JavaScript methods which show alert dialogs:d prompt. This page has"
+        if paragraph_website == paragraph_expected:
+            try:
+                assert paragraph_website == paragraph_expected
+                print("Paragraph text is correct. Current text is:", paragraph_website)
+            except AssertionError:
+                print("Paragraph text is different. Current text is:", paragraph_website)
+
+
+
+
 
 
 
