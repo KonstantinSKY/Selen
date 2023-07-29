@@ -1,3 +1,4 @@
+import tarfile
 import time
 from faker import Faker
 from random import randint
@@ -17,8 +18,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.alert import Alert
 
-faker_class = Faker()
+faker_indent = Faker()
 
 
 class FirefoxSearch(unittest.TestCase):
@@ -52,19 +54,21 @@ class FirefoxSearch(unittest.TestCase):
     def test_Basic_HTML_Form_Example(self):
         driver = self.driver
         driver.get("https://testpages.herokuapp.com/")
-        driver.find_element(By.ID, "htmlformtest").click() #next page HTML Form Example
+        driver.find_element(By.ID, "htmlformtest").click()  # next page HTML Form Example
         check_box_random = randint(0, 2)
-        driver.find_elements(By.NAME, "radioval")[randint(0, 2)].click() # click random radio every time
+        driver.find_elements(By.NAME, "radioval")[randint(0, 2)].click()  # click random radio every time
 
-        driver.find_elements(By.NAME, "checkboxes[]")[check_box_random].click() # click random checkbox every time
+        driver.find_elements(By.NAME, "checkboxes[]")[check_box_random].click()  # click random checkbox every time
         time.sleep(5)
 
-        Select(driver.find_element(By.NAME, 'dropdown')).select_by_index(randint(0, 5)) #choosing random dropdown by Select
-        Select(driver.find_element(By.NAME, "multipleselect[]")).select_by_index(randint(0, 3))#Multiple Select Values
+        Select(driver.find_element(By.NAME, 'dropdown')).select_by_index(
+            randint(0, 5))  # choosing random dropdown by Select
+        Select(driver.find_element(By.NAME, "multipleselect[]")).select_by_index(
+            randint(0, 3))  # Multiple Select Values
 
         driver.find_elements(By.NAME, "submitbutton")[1].click()
         time.sleep(5)
-        #checking if random checkbox have same value with submited form
+        # checking if random checkbox have same value with submited form
         submit_form = driver.find_element(By.ID, "_valuecheckboxes0").text
 
         if "cb" + str(check_box_random + 1) == submit_form:
@@ -73,6 +77,7 @@ class FirefoxSearch(unittest.TestCase):
             print("Form Bad")
 
         time.sleep(10)
+
     def test_Dynamic_HTML_TABLE_Tag(self):
         driver = self.driver
 
@@ -87,7 +92,7 @@ class FirefoxSearch(unittest.TestCase):
         except AssertionError:
             print("Title is different. Current Title is:", driver.title)
 
-    # checking if current urs is CORRECT
+        # checking if current urs is CORRECT
         acct_reg_expected_url = "https://testpages.herokuapp.com/styled/tag/dynamic-table.html"
         acct_reg_actual_url = driver.current_url
         if acct_reg_expected_url == acct_reg_actual_url:
@@ -103,16 +108,14 @@ class FirefoxSearch(unittest.TestCase):
                 print("Paragraph text is correct. Current text is:", text_website)
             except AssertionError:
                 print("Paragraph text is different. Current text is:", text_website)
-        driver.find_element(By.TAG_NAME, "p") # checking first paragraph
-        driver.find_element(By.ID, "refreshtable") # refresh table button
-        driver.find_element(By.ID, "caption") # placeholder Caption
-        driver.find_element(By.ID, "tableid") # placeholder Id
-
+        driver.find_element(By.TAG_NAME, "p")  # checking first paragraph
+        driver.find_element(By.ID, "refreshtable")  # refresh table button
+        driver.find_element(By.ID, "caption")  # placeholder Caption
+        driver.find_element(By.ID, "tableid")  # placeholder Id
 
         elems = driver.find_elements(By.TAG_NAME, "a")
         print(type(elems))
         print(elems)
-
 
         for elem in elems:
 
@@ -144,45 +147,106 @@ class FirefoxSearch(unittest.TestCase):
             else:
                 print("NOT OK  for Element", elem.text)
 
-        driver.find_element(By.TAG_NAME, "summary").click() # Table data
+        driver.find_element(By.TAG_NAME, "summary").click()  # Table data
         jsondata = driver.find_element(By.ID, "jsondata")
-        jsondata.clear()# placeholder with json textarea
-        jsondata.send_keys('[{"name" : "Bob", "age" : 20}, {"name": "George", "age" : 42}, {"name" : "Max", "age" : 20}]')
+        jsondata.clear()  # placeholder with json textarea
+
+        data = [{"name" : "Bob", "age" : 20}, {"name": "George", "age" : 42}, {"name" : "Max", "age" : 20}]
+
+        print([1:1])
+
+
+        print(data)
+
+        for i in range(100):
+            data.append({"name":faker_indent.first_name(), "age": randint(10, 100)})
+            print(data)
+
+        time.sleep(1)
+
+        print(data)
+        jsondata.send_keys(str(data).replace("'", '"'))
+        time.sleep(4)
+
         driver.find_element(By.ID, "refreshtable").click()
+        time.sleep(10)
+        Allelems = driver.find_elements(By.TAG_NAME, "tr")
+
+        if len(Allelems[1:]) == len(data):
+            print("lenght is ok")
+        else:
+            print("lenght is not ok")
+
+        i = 0
+        for elem in Allelems[1:]:
+
+            tds = elem.find_elements(By.TAG_NAME,"td")
+            if tds[0].text == data[i]["name"] and tds[1].text == str(data[i]["age"]):
+                print("OK")
+            else:
+                print("Not OK", tds[0], "is", data[i]["name"], tds[1],"is", data[i]["age"] )
+            i += 1
+
+
+
 
     def test_Alert_Box_Examples(self):
         driver = self.driver
         driver.get("https://testpages.herokuapp.com/")
         driver.find_element(By.ID, "alerttest").click()
         text_website = driver.find_element(By.TAG_NAME, "h1").text
-        text_expected = "Alert Box Examples" # удали чтонибудь
-        if text_website == text_expected:
-            try:
-                assert text_website == text_expected
-                print("Paragraph text is correct. Current text is:", text_website)
-            except AssertionError:
-                print("Paragraph text is different. Current text is:", text_website)
-        driver.find_element(By.ID, "alertexamples") # Button - Show alert box
-        driver.find_element(By.ID, "confirmexample") # Button - Show confirm box
-        driver.find_element(By.ID, "promptexample") # Button - Show prompt box
-        paragraph_website = driver.find_element(By.TAG_NAME, "p").text # не получается
-        paragraph_expected = "There are three main JavaScript methods which show alert dialogs:d prompt. This page has"
-        if paragraph_website == paragraph_expected:
-            try:
-                assert paragraph_website == paragraph_expected
-                print("Paragraph text is correct. Current text is:", paragraph_website)
-            except AssertionError:
-                print("Paragraph text is different. Current text is:", paragraph_website)
+        text_expected = "Alert Box Examples"
+        try:
+            assert text_website == text_expected
+            print("Paragraph text is correct. Current text is:", text_website)
+        except AssertionError:
+            print("Paragraph text is different. Current text is:", text_website)
 
+        button1 = driver.find_element(By.ID, "alertexamples")  # Button - Show alert box
+        button1.click()
+        alert = Alert(driver)
+        print(alert.text)
+        time.sleep(4)
+        alert.accept()
+        time.sleep(3)
+        button2 = driver.find_element(By.ID, "confirmexample")  # Button - Show confirm box
+        button3 = driver.find_element(By.ID, "promptexample")  # Button - Show prompt box
+        paragraph_website = driver.find_element(By.TAG_NAME, "p").text
+        paragraph_expected = "There are three main JavaScript methods which show alert dialogs: alert," \
+                             " confirm and prompt. This page has examples of each."
 
+        try:
+            assert paragraph_website == paragraph_expected
+            print("Paragraph text is correct. Current text is:", paragraph_website)
+        except AssertionError:
+            print("Paragraph text is different. Current text is:", paragraph_website)
 
+        button2.click()
+        alert = Alert(driver)
+        print(alert.text)
+        time.sleep(4)
+        alert.accept()
+        if driver.find_element(By.ID, "confirmreturn").text == "true":
+            print("OK")
+        else:
+            print("Not OK")
 
+        time.sleep(3)
+        button2.click()
+        time.sleep(3)
+        alert.dismiss()
+        time.sleep(3)
 
-
-
-
-
-
+        button3.click()
+        time.sleep(3)
+        alert.send_keys("Max")
+        time.sleep(3)
+        alert.accept()
+        time.sleep(3)
+        if driver.find_element(By.ID, "promptreturn").text == "Max":
+            print("OK")
+        else:
+            print("Not OK")
 
     def tearDown(self):
         self.driver.quit()
