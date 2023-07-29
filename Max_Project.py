@@ -153,8 +153,6 @@ class FirefoxSearch(unittest.TestCase):
 
         data = [{"name" : "Bob", "age" : 20}, {"name": "George", "age" : 42}, {"name" : "Max", "age" : 20}]
 
-        print([1:1])
-
 
         print(data)
 
