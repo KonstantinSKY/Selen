@@ -1,5 +1,6 @@
 import tarfile
 import time
+
 from faker import Faker
 from random import randint
 import unittest
@@ -245,6 +246,32 @@ class FirefoxSearch(unittest.TestCase):
             print("OK")
         else:
             print("Not OK")
+
+    def test_Refresh_Page_Test(self):
+        driver = self.driver
+        driver.get("https://testpages.herokuapp.com/styled/refresh")
+        value1 = driver.find_element(By.ID, "embeddedrefreshdatevalue").text
+        value2 = driver.find_element(By.ID, "refreshdate").text
+        value3 = driver.find_element(By.TAG_NAME, "h1").text.split()[-1]
+        driver.refresh()
+        time.sleep(5)
+        if value3 == value2 == value1:
+            print("after Page Refresh the id numbers equal")
+        else:
+            print("ERROR after Page Refresh the id numbers  is not equal", value3, value1, value2)
+        driver.find_element(By.LINK_TEXT, "EvilTester.com").click()
+        time.sleep(3)
+        driver.close()
+
+
+
+
+
+
+
+
+
+
 
     def tearDown(self):
         self.driver.quit()
