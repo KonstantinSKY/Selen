@@ -1,12 +1,43 @@
+# def sum_list(l):
+#     sum = 0
+#
+#
+#
+#     for x in l:
+#         sum = sum + x
+#
+#         print(sum)
+#     return sum
+#
+#
+# l = [1, 2, 3, 4, 5]
+# print(sum_list(l))
+# #
+#
+#
+#
+# number = 325
+# while number > 100:
+#     number = number - 1
+#
+#
+#     print(number)
 
+import faker
+from datetime import  datetime
 
+fake = faker.Faker()
 
-data = [{"name": "Bob", "age": [23,34, {"dfs": [224, 234, "ewerwe"]}, 5344]}, {"name": "George", "age": 42}, {"name": "Max", "age": 20}]
+# print(type(fake.first_name()))
+# print(fake.month_name()+" "+fake.year())
+#
+# print(type(datetime.now()))
 
-
-for i in data:
-    print(i)
-    print(type(i))
-    print(i.items())
-    for key in i.keys():
-        print(key)
+num = fake.date().split("-")
+print(type(num))
+num.reverse()
+print(num)
+num_reverse = ("/").join(num)
+print(num_reverse)
+num1 = fake.time()[:-3]
+print(num_reverse,  num1)

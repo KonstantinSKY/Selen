@@ -3,6 +3,7 @@ import time
 
 from faker import Faker
 from random import randint
+import random
 import unittest
 import requests
 from selenium.common.exceptions import WebDriverException as WDE
@@ -20,6 +21,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.alert import Alert
+from selenium.webdriver.support.color import Color
+from datetime import date
+from datetime import datetime
+
+today = date.today()
 
 faker_indent = Faker()
 
@@ -152,13 +158,12 @@ class FirefoxSearch(unittest.TestCase):
         jsondata = driver.find_element(By.ID, "jsondata")
         jsondata.clear()  # placeholder with json textarea
 
-        data = [{"name" : "Bob", "age" : 20}, {"name": "George", "age" : 42}, {"name" : "Max", "age" : 20}]
-
+        data = [{"name": "Bob", "age": 20}, {"name": "George", "age": 42}, {"name": "Max", "age": 20}]
 
         print(data)
 
         for i in range(100):
-            data.append({"name":faker_indent.first_name(), "age": randint(10, 100)})
+            data.append({"name": faker_indent.first_name(), "age": randint(10, 100)})
             print(data)
 
         time.sleep(1)
@@ -179,15 +184,12 @@ class FirefoxSearch(unittest.TestCase):
         i = 0
         for elem in Allelems[1:]:
 
-            tds = elem.find_elements(By.TAG_NAME,"td")
+            tds = elem.find_elements(By.TAG_NAME, "td")
             if tds[0].text == data[i]["name"] and tds[1].text == str(data[i]["age"]):
                 print("OK")
             else:
-                print("Not OK", tds[0], "is", data[i]["name"], tds[1],"is", data[i]["age"] )
+                print("Not OK", tds[0], "is", data[i]["name"], tds[1], "is", data[i]["age"])
             i += 1
-
-
-
 
     def test_Alert_Box_Examples(self):
         driver = self.driver
@@ -254,24 +256,60 @@ class FirefoxSearch(unittest.TestCase):
         value2 = driver.find_element(By.ID, "refreshdate").text
         value3 = driver.find_element(By.TAG_NAME, "h1").text.split()[-1]
         driver.refresh()
-        time.sleep(5)
+        time.sleep(2)
         if value3 == value2 == value1:
             print("after Page Refresh the id numbers equal")
         else:
             print("ERROR after Page Refresh the id numbers  is not equal", value3, value1, value2)
         driver.find_element(By.LINK_TEXT, "EvilTester.com").click()
-        time.sleep(3)
+        time.sleep(2)
         driver.close()
 
+    def test_HTML5_Form_Elements_Examples(self):
+        driver = self.driver
+        driver.get("https://testpages.herokuapp.com/styled/html5-form-test.html")
+        # colors = ['128,0,0', '#800000', '#0000FF', '#00FF00', '#FFFF00', '#00FFFF']
+        # random_color = random.choice(colors)
+        # driver.find_element(By.ID, "colour-picker").send_keys(random_color)
+        fake_email = driver.find_element(By.ID, "email-field")
+        fake_email.clear()
+        fake_email.send_keys(faker_indent.email())
+        num = driver.find_element(By.ID, "number-field")
+        num.clear()
+        num.send_keys(randint(0, 1000))
+        data_string = faker_indent.month_name() + " " + faker_indent.year()
+        driver.find_element(By.ID, "month-field").send_keys(data_string)
+        time.sleep(3)
+        # now = datetime.now()
+        dt_string = faker_indent.date().split("-")
+        dt_string.reverse()
+        num_reverse = ("/").join(dt_string)
+        num_reverse1 = faker_indent.time()[:-3]
+        num_reverse2 = num_reverse + "T" + num_reverse1
+        print(num_reverse2)
+        # dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        clear_data = driver.find_element(By.ID, "date-time-picker")
+        clear_data.click()
+        clear_data.send_keys(num_reverse2)
+        time.sleep(5)
+        driver.find_element(By.NAME, "submitbutton").click()
+        time.sleep(3)
+        submit1 = driver.find_element(By.ID, "_valuedatetime").text
+        submit2 = driver.find_element(By.ID, "_valueemail").text
+        submit3 = driver.find_element(By.ID, "_valuemonth").text
+        submit4 = driver.find_element(By.ID, "_valuenumber").text
+        print(type(submit1))
+        print(type(dt_string))
+        if dt_string == submit1 and submit2 == fake_email:
+            print("datetime and email is correct")
+        else:
+            print("datetime and email is NOT correct")
+        if submit3 == data_string and submit4 == num:
+            print("month and number is correct")
+        else:
+            print("month and number is NOT correct")
 
-
-
-
-
-
-
-
-
+        time.sleep(3)
 
     def tearDown(self):
         self.driver.quit()
