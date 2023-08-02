@@ -1,31 +1,17 @@
-import tarfile
+
 import time
 
 from faker import Faker
 from random import randint
-import random
+
 import unittest
-import requests
-from selenium.common.exceptions import WebDriverException as WDE
-from selenium.webdriver import Keys
-from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.edge.service import Service
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.alert import Alert
-from selenium.webdriver.support.color import Color
-from datetime import date
-from datetime import datetime
-
-today = date.today()
 
 faker_indent = Faker()
 
