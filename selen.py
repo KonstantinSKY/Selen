@@ -74,6 +74,7 @@ class Selen:
             opts.add_argument('--start-maximized')
             opts.add_argument('--disable-extensions')
             self.WD = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=opts)
+            self.WD.maximize_window()
 
         elif wd == "Edge":
             opts = webdriver.EdgeOptions()
@@ -118,8 +119,13 @@ class Selen:
     # TODO Class Elem
     # TODO Page Source
     class Out_str(str):
+
+        def __init__(self, txt):
+            self.txt = txt
+            print("WTF444")
+
         def out(self, message=''):
-            print(message, self)
+            print(message, self.txt)
             return self
 
     class Out_dict(dict):
@@ -186,7 +192,7 @@ class Selen:
         else:
             self.elem = data
             self.elems = [self.elem]
-        self.WD.execute_script("arguments[0].scrollIntoView();", self.elem)
+        # self.WD.execute_script("arguments[0].scrollIntoView();", self.elem)
 
     # Service get depth od tuples in tuples
     def __get_tuple_depth(self, t):
@@ -504,7 +510,10 @@ class Selen:
 
     # Text of element (self.elem) It has 2 mode text return or check if the text presents
     def text(self, text=None):
+        print(type(self.elem))
+
         self.out_str = self.Out_str(self.elem.text)
+        print("WTF3")
         if text is None:
             return self.out_str
         self.__checker(self.elem.text, text, f'Text "{self.elem.text}" at element: "{self.__xpath_query()}"')

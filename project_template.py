@@ -15,7 +15,7 @@ class Project(Selen):
     def __init__(se, wd="Chrome"):
         super().__init__(wd)
         # Web-site and tests environment settings
-        se.url = "https://testpages.herokuapp.com/styled/index.html"  # URL of Project
+        se.url = "https://letcode.in/test"  # URL of Project
         se.ok_assert = False  # Switch of the assertion stop during the test
         se.ok_print = True    # Switch of print message during the test
 
@@ -24,13 +24,20 @@ class Project(Selen):
     # l_login_btn = (CLASS, "Navigation_login__JL_4K")
 
     # Example of home page of testing website
-    def home(se):
+    def test_input_field(se):
         se.WD.get(se.url)  # Get page from WD
-        se.Wait(TAG, "title")
+        se.WD.title()
 
-        se.title("Selenium Test Pages")
-        # se.check_page()
-        se.check_links()
+        se.Find(CLASS, "card-footer-item")
+        print("WTF")
+        se.click()
+        print("WTF2")
+        se.text("Edit")
+        # # se.Wait(TAG, "title").out()
+        # #
+        # # se.title("Selenium Test Pages")
+        # # se.check_page()
+        # se.check_links()
 
         # Wait element and check inner text
         # se.Wait(l_h1).text('Looking for a developers, UX/UI designer, QA or DevOps...or development agency?')
@@ -38,7 +45,7 @@ class Project(Selen):
         # se.curr_url("https://ibench.net/")  # Check url
         # se.Img(check=True).stat.out()
         # Check all Images
-
+        se.WD.close()
     # Each new test in new methods
     def test_name(se):
         pass
@@ -49,6 +56,6 @@ class Project(Selen):
 # You can start the file, and you can check your method here
 if __name__ == "__main__":
     project = Project("Firefox")
-    project.home()
-    project.test_name()
+    project.test_input_field()
+    # project.test_name()
     print('FINISHED')

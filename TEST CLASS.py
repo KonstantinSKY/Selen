@@ -26,6 +26,12 @@
 import faker
 from datetime import  datetime
 
+n = 3
+m = 13
+
+for i in range(n, m, n):
+    print(i)
+
 fake = faker.Faker()
 
 # print(type(fake.first_name()))
