@@ -68,25 +68,29 @@ class Selen:
                 opts.add_argument('window-size=1600x2600')
             opts.add_argument('--disable-blink-features=AutomationControlled')
             self.WD = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
+            self.WD.maximize_window()
 
         elif wd == "Firefox":
             opts = webdriver.FirefoxOptions()
             opts.add_argument('--start-maximized')
             opts.add_argument('--disable-extensions')
             self.WD = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=opts)
+            self.WD.maximize_window()
 
         elif wd == "Edge":
             opts = webdriver.EdgeOptions()
             opts.use_chromium = True
-            # opts.binary_location = '/opt/microsoft/msedge/msedge'
+            opts.binary_location = '/opt/microsoft/msedge/msedge'
             opts.add_argument('--start-maximized')
             self.WD = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=opts)
+            self.WD.maximize_window()
 
         elif wd == "Opera":
             opts = webdriver.ChromeOptions()
             # opts.binary_location = "/usr/bin/opera"
             opts.add_experimental_option('w3c', True)
             self.WD = webdriver.Chrome(service=OperaService(OperaDriverManager().install()), options=opts)
+            self.WD.maximize_window()
 
         elif wd == "Seleniumwire":
             opts = SWWD.ChromeOptions()
@@ -94,8 +98,8 @@ class Selen:
             if headless:
                 opts.add_argument('headless')
             opts.add_argument('window-size=1600x2600')
-
             self.WD = SWWD.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
+            self.WD.maximize_window()
 
         else:
             print('!!! WebDriver for: ', wd, " does NOT Exits in the system.")
@@ -105,8 +109,8 @@ class Selen:
         self.elem = WebElement
         self.wd_name = wd
 
-        self.out_str = self.Out_str('')
-        self.stat = self.Out_dict({})
+        self.out_str = self.OutStr('')
+        self.stat = self.OutDict({})
         # self.WD.maximize_window()
         self.AC = ActionChains(self.WD)
         self.WDW = WebDriverWait(self.WD, 10)
@@ -117,13 +121,13 @@ class Selen:
 
     # TODO Class Elem
     # TODO Page Source
-    class Out_str(str):
-        def out(self, message=''):
+    class OutStr(str):
+        def print_out(self, message=''):
             print(message, self)
             return self
 
-    class Out_dict(dict):
-        def out(self, message=''):
+    class OutDict(dict):
+        def print_out(self, message=''):
             print(message)
             print(json.dumps(self, indent=4))
 
@@ -332,7 +336,7 @@ class Selen:
         self.tag('img', *idxs)
         chk = "Checking" if check else ""
         self.print("DIV", f"Images Found:  {len(self.elems)}. {chk}")
-        self.stat = self.Out_dict({})
+        self.stat = self.OutDict({})
 
         for elem in self.elems:
             e_hash = self.__get_hash(self.elem)
@@ -488,7 +492,7 @@ class Selen:
 
     # Text of element (self.elem) It has 2 mode text return or check if the text presents
     def title(self, title=''):
-        self.out_str = self.Out_str(self.WD.title)
+        self.out_str = self.OutStr(self.WD.title)
         if title:
             self.__checker(self.out_str, title, f'Title "{self.out_str}" at the page: "{self.WD.current_url}"')
             return self
@@ -496,7 +500,7 @@ class Selen:
 
     # Current URL of current page
     def curr_url(self, url=''):
-        self.out_str = self.Out_str(self.WD.current_url)
+        self.out_str = self.OutStr(self.WD.current_url)
         if url:
             self.__checker(self.out_str, url, f"Current_URL {self.out_str}")
             return self
@@ -504,15 +508,18 @@ class Selen:
 
     # Text of element (self.elem) It has 2 mode text return or check if the text presents
     def text(self, text=None):
-        self.out_str = self.Out_str(self.elem.text)
+        print(self.elem.text)
+        self.out_str = self.OutStr(self.elem.text)
+        # print(self.out_str)
         if text is None:
-            return self.out_str
+            print("text checking", self.out_str.print_out())
+            return self
         self.__checker(self.elem.text, text, f'Text "{self.elem.text}" at element: "{self.__xpath_query()}"')
         return self
 
     # Type text in the element (self.elem)
     def type(self, *args):
-        self.out_str = self.Out_str(", ".join(str(arg) for arg in args))
+        self.out_str = self.OutStr(", ".join(str(arg) for arg in args))
         self.click(action=False)
         self.elem.clear()
         self.elem.send_keys(*args)
@@ -613,7 +620,7 @@ class Selen:
         """, elem)  # Checking for correct XPATH
         try:
             self.WD.find_element(XPATH, xpath)
-            self.out_str = self.Out_str(xpath)
+            self.out_str = self.OutStr(xpath)
             return self.out_str
 
         except NoSuchElementException:
