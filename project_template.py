@@ -42,6 +42,7 @@ class Project(Selen):
     
 # You can start the file, and you can check your method here
 if __name__ == "__main__":
+    # project = Project("Firefox")
     project = Project()
     project.home()
     project.test_name()
