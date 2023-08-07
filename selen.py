@@ -68,14 +68,12 @@ class Selen:
                 opts.add_argument('window-size=1600x2600')
             opts.add_argument('--disable-blink-features=AutomationControlled')
             self.WD = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
-            self.WD.maximize_window()
 
         elif wd == "Firefox":
             opts = webdriver.FirefoxOptions()
             opts.add_argument('--start-maximized')
             opts.add_argument('--disable-extensions')
             self.WD = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=opts)
-            self.WD.maximize_window()
 
         elif wd == "Edge":
             opts = webdriver.EdgeOptions()
@@ -83,7 +81,6 @@ class Selen:
             opts.binary_location = '/opt/microsoft/msedge/msedge'
             opts.add_argument('--start-maximized')
             self.WD = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=opts)
-            self.WD.maximize_window()
 
         elif wd == "Opera":
             opts = webdriver.ChromeOptions()
@@ -111,7 +108,7 @@ class Selen:
 
         self.out_str = self.OutStr('')
         self.stat = self.OutDict({})
-        # self.WD.maximize_window()
+        self.WD.maximize_window()
         self.AC = ActionChains(self.WD)
         self.WDW = WebDriverWait(self.WD, 10)
         self.url = url if url else ""
