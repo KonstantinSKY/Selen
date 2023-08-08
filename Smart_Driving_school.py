@@ -3,22 +3,27 @@ from faker import Faker
 from random import randint
 import unittest
 from selenium.webdriver import Keys
+from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
+
 from selenium.webdriver.support import expected_conditions as EC
 
 
 class LetCodeTest(unittest.TestCase):
 
     def setUp(self):
-        opts = webdriver.FirefoxOptions()
-        opts.add_argument('--start-maximized')
-        opts.add_argument('--disable-extensions')
-        self.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+        # opts = webdriver.FirefoxOptions()
+        opts = webdriver.ChromeOptions()
+        # opts.add_argument('--start-maximized')
+        # opts.add_argument('--disable-extensions')
+        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
+        # self.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
         self.driver.maximize_window()
 
     def test_add_person(self):
@@ -26,8 +31,12 @@ class LetCodeTest(unittest.TestCase):
         driver.get("http://99.153.249.66/admin/")
         driver.find_element(By.NAME, "username").send_keys("max")
         driver.find_element(By.NAME, "password").send_keys("MaxP!2023")
-        driver.find_element(By.XPATH, "//input[contains(@type,'submit')]").click()
+        driver.find_element(By.CLASS_NAME, "submit-row").find_element(By.TAG_NAME, "input").click()
+
+        # driver.find_element(By.XPATH, "//input[contains(@type,'submit')]").click()
         time.sleep(3)
+
+
         driver.find_element(By.CLASS_NAME, "model-person").find_element(By.CLASS_NAME, "addlink").click()
         time.sleep(4)
 
