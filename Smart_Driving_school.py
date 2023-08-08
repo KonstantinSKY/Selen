@@ -37,6 +37,7 @@ class LetCodeTest(unittest.TestCase):
         time.sleep(3)
 
 
+
         driver.find_element(By.CLASS_NAME, "model-person").find_element(By.CLASS_NAME, "addlink").click()
         time.sleep(4)
 
