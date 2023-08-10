@@ -32,14 +32,8 @@ class LetCodeTest(unittest.TestCase):
         driver.find_element(By.NAME, "username").send_keys("max")
         driver.find_element(By.NAME, "password").send_keys("MaxP!2023")
         driver.find_element(By.CLASS_NAME, "submit-row").find_element(By.TAG_NAME, "input").click()
-
-        # driver.find_element(By.XPATH, "//input[contains(@type,'submit')]").click()
-        time.sleep(3)
-
-
-
+        time.sleep(5)
         driver.find_element(By.CLASS_NAME, "model-person").find_element(By.CLASS_NAME, "addlink").click()
-        time.sleep(4)
 
         for n in range(100):
             print("Test :", n)
@@ -70,11 +64,10 @@ class LetCodeTest(unittest.TestCase):
             f_name: fake.first_name(),
             l_name: fake.last_name(),
             mid_name: fake.first_name(),
-            birthday: fake.date_of_birth().strftime("%Y-%m-%d"),
+            birthday: fake.date_of_birth(minimum_age=10, maximum_age=130).strftime("%Y-%m-%d"),
             street: fake.street_address(),
             unit: fake.random_number(digits=3),
             city: fake.city(),
-            state: fake.state(),
             zipcode: fake.postcode(),
             idNumber: fake.random_number(digits=8),
             idIssued: fake.past_date().strftime("%Y-%m-%d"),
@@ -86,12 +79,57 @@ class LetCodeTest(unittest.TestCase):
             wait = WebDriverWait(driver, 10)
             element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
             element.send_keys(data)
+            print(xpath, data)
             time.sleep(1)
-
-        Select(driver.find_element(By.ID, "id_sex")).select_by_index(randint(0, 2))
+        time.sleep(2)
+        Select(driver.find_element(By.ID, "id_sex")).select_by_value(str(randint(0, 2)))
+        time.sleep(2)
+        Select(driver.find_element(By.ID, "id_state")).select_by_value(str(randint(1, 3)))
         driver.find_element(By.NAME, "_save").click()
         time.sleep(5)
         driver.find_element(By.CLASS_NAME, "object-tools").find_element(By.CLASS_NAME, "addlink").click()
+        time.sleep(2)
+
+    def state_fill(self):
+        fake = Faker()
+        driver = self.driver
+        driver.get("http://99.153.249.66/admin/")
+        driver.find_element(By.NAME, "username").send_keys("max")
+        driver.find_element(By.NAME, "password").send_keys("MaxP!2023")
+        driver.find_element(By.CLASS_NAME, "submit-row").find_element(By.TAG_NAME, "input").click()
+        time.sleep(2)
+        # driver.find_element(By.CLASS_NAME, "model-state").find_elements(By.TAG_NAME, "th")[0].click()
+        driver.find_element(By.XPATH, "//a[contains(.,'States')]").click()
+        time.sleep(3)
+        driver.find_element(By.XPATH, '//a[contains(.,"Add state")]').click()
+        postal = "//input[@id='id_postal_name']"
+        state = "//input[@id='id_name']"
+
+        add_state = {
+            postal: fake.state_abbr(),
+            state: fake.state()
+        }
+        for xpath, data in add_state.items():
+            wait = WebDriverWait(driver, 10)
+            element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+            element.send_keys(data)
+            time.sleep(1)
+
+        Select(driver.find_element(By.ID, "id_time_zone")).select_by_value(str(randint(0, 5)))
+        driver.find_element(By.NAME, "_save").click()
+        time.sleep(5)
+        driver.find_element(By.XPATH, '//a[contains(.,"Add state")]').click()
+        time.sleep(5)
+
+    def test_state(self):
+
+        for n in range(10):
+            self.state_fill()
+        # driver.find_element(By.CLASS_NAME, "object-tools").find_element(By.CLASS_NAME, "addlink").click()
+
+        #
+
+        time.sleep(5)
 
     def tearDown(self):
         self.driver.quit()
