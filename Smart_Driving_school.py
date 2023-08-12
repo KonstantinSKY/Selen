@@ -1,7 +1,7 @@
 import time
 from faker import Faker
 from random import randint
-import unittest
+from unittest import TestCase
 from selenium.webdriver import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
@@ -15,7 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-class LetCodeTest(unittest.TestCase):
+class LetCodeTest(TestCase):
 
     def setUp(self):
         # opts = webdriver.FirefoxOptions()
@@ -130,6 +130,87 @@ class LetCodeTest(unittest.TestCase):
         #
 
         time.sleep(5)
+
+    def test_fill_correct_states(self):
+
+        states_info = {
+            "AL": ("Alabama", "Central (CT)"),
+            "AK": ("Alaska", "Alaska (AKT)"),
+            "AZ": ("Arizona", "Mountain (MT)"),
+            "AR": ("Arkansas", "Central (CT)"),
+            "CA": ("California", "Pacific (PT)"),
+            "CO": ("Colorado", "Mountain (MT)"),
+            "CT": ("Connecticut", "Eastern (ET)"),
+            "DE": ("Delaware", "Eastern (ET)"),
+            "FL": ("Florida", "Eastern (ET)"),
+            "GA": ("Georgia", "Eastern (ET)"),
+            "HI": ("Hawaii", "Hawaii-Aleutian (HST)"),
+            "ID": ("Idaho", "Mountain (MT)"),
+            "IL": ("Illinois", "Central (CT)"),
+            "IN": ("Indiana", "Eastern (ET)"),
+            "IA": ("Iowa", "Central (CT)"),
+            "KS": ("Kansas", "Central (CT)"),
+            "KY": ("Kentucky", "Eastern (ET)"),
+            "LA": ("Louisiana", "Central (CT)"),
+            "ME": ("Maine", "Eastern (ET)"),
+            "MD": ("Maryland", "Eastern (ET)"),
+            "MA": ("Massachusetts", "Eastern (ET)"),
+            "MI": ("Michigan", "Eastern (ET)"),
+            "MN": ("Minnesota", "Central (CT)"),
+            "MS": ("Mississippi", "Central (CT)"),
+            "MO": ("Missouri", "Central (CT)"),
+            "MT": ("Montana", "Mountain (MT)"),
+            "NE": ("Nebraska", "Central (CT)"),
+            "NV": ("Nevada", "Pacific (PT)"),
+            "NH": ("New Hampshire", "Eastern (ET)"),
+            "NJ": ("New Jersey", "Eastern (ET)"),
+            "NM": ("New Mexico", "Mountain (MT)"),
+            "NY": ("New York", "Eastern (ET)"),
+            "NC": ("North Carolina", "Eastern (ET)"),
+            "ND": ("North Dakota", "Central (CT)"),
+            "OH": ("Ohio", "Eastern (ET)"),
+            "OK": ("Oklahoma", "Central (CT)"),
+            "OR": ("Oregon", "Pacific (PT)"),
+            "PA": ("Pennsylvania", "Eastern (ET)"),
+            "RI": ("Rhode Island", "Eastern (ET)"),
+            "SC": ("South Carolina", "Eastern (ET)"),
+            "SD": ("South Dakota", "Central (CT)"),
+            "TN": ("Tennessee", "Central (CT)"),
+            "TX": ("Texas", "Central (CT)"),
+            "UT": ("Utah", "Mountain (MT)"),
+            "VT": ("Vermont", "Eastern (ET)"),
+            "VA": ("Virginia", "Eastern (ET)"),
+            "WA": ("Washington", "Pacific (PT)"),
+            "WV": ("West Virginia", "Eastern (ET)"),
+            "WI": ("Wisconsin", "Central (CT)"),
+            "WY": ("Wyoming", "Mountain (MT)")
+        }
+
+
+
+        # driver = self.driver
+        # driver.get("http://99.153.249.66/admin/")
+        # driver.find_element(By.NAME, "username").send_keys("max")
+        # driver.find_element(By.NAME, "password").send_keys("MaxP!2023")
+        # driver.find_element(By.CLASS_NAME, "submit-row").find_element(By.TAG_NAME, "input").click()
+        # time.sleep(2)
+        # # driver.find_element(By.CLASS_NAME, "model-state").find_elements(By.TAG_NAME, "th")[0].click()
+        # driver.find_element(By.XPATH, "//a[contains(.,'States')]").click()
+        # time.sleep(3)
+        # driver.find_element(By.XPATH, '//a[contains(.,"Add state")]').click()
+        # postal = "//input[@id='id_postal_name']"
+        # state = "//input[@id='id_name']"
+        # Select(driver.find_element(By.ID, "id_time_zone")).select_by_valu(str(randint(0, 5)))
+
+        for PN,  state in states_info.items():
+            print(PN, state[0], state[1])
+
+
+
+
+
+
+
 
     def tearDown(self):
         self.driver.quit()
