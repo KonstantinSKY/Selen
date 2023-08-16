@@ -53,7 +53,6 @@ class LetCodeTest(TestCase):
         street = "//input[@type='text'][contains(@id,'address')]"
         unit = "//input[@type='text'][contains(@id,'unit')]"
         city = "//input[@type='text'][contains(@id,'city')]"
-        state = "//input[@type='text'][contains(@id,'state')]"
         zipcode = "//input[@type='text'][contains(@id,'code')]"
         idNumber = "//input[@type='text'][contains(@id,'number')]"
         idIssued = "//input[contains(@name,'ID_issued_date')]"
@@ -76,15 +75,16 @@ class LetCodeTest(TestCase):
         }
 
         for xpath, data in fields_data.items():
-            wait = WebDriverWait(driver, 10)
+            wait = WebDriverWait(driver, 5)
             element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
             element.send_keys(data)
-            print(xpath, data)
             time.sleep(1)
         time.sleep(2)
         Select(driver.find_element(By.ID, "id_sex")).select_by_value(str(randint(0, 2)))
         time.sleep(2)
-        Select(driver.find_element(By.ID, "id_state")).select_by_value(str(randint(1, 3)))
+        Select(driver.find_element(By.ID, "id_ID_state")).select_by_value(str(randint(0, 9)))
+        Select(driver.find_element(By.NAME, "state")).select_by_value(str(randint(0, 8)))
+
         driver.find_element(By.NAME, "_save").click()
         time.sleep(5)
         driver.find_element(By.CLASS_NAME, "object-tools").find_element(By.CLASS_NAME, "addlink").click()
@@ -110,7 +110,7 @@ class LetCodeTest(TestCase):
             state: fake.state()
         }
         for xpath, data in add_state.items():
-            wait = WebDriverWait(driver, 10)
+            wait = WebDriverWait(driver, 5)
             element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
             element.send_keys(data)
             time.sleep(1)
@@ -123,11 +123,8 @@ class LetCodeTest(TestCase):
 
     def test_state(self):
 
-        for n in range(10):
+        for n in range(100):
             self.state_fill()
-        # driver.find_element(By.CLASS_NAME, "object-tools").find_element(By.CLASS_NAME, "addlink").click()
-
-        #
 
         time.sleep(5)
 
@@ -186,31 +183,31 @@ class LetCodeTest(TestCase):
             "WY": ("Wyoming", "Mountain (MT)")
         }
 
+        driver = self.driver
+        driver.get("http://99.153.249.66/admin/")
+        driver.find_element(By.NAME, "username").send_keys("max")
+        driver.find_element(By.NAME, "password").send_keys("MaxP!2023")
+        driver.find_element(By.CLASS_NAME, "submit-row").find_element(By.TAG_NAME, "input").click()
+        time.sleep(2)
+        driver.find_element(By.CLASS_NAME, "model-state").find_elements(By.TAG_NAME, "th")[0].click()
+        driver.find_element(By.XPATH, "//a[contains(.,'States')]").click()
+        time.sleep(3)
+        driver.find_element(By.XPATH, '//a[contains(.,"Add state")]').click()
+        time.sleep(5)
+        postal = "//input[@id='id_postal_name']"
+        state = "//input[@id='id_name']"
+        Select(driver.find_element(By.ID, "id_time_zone")).select_by_value(str(randint(0, 5)))
 
-
-        # driver = self.driver
-        # driver.get("http://99.153.249.66/admin/")
-        # driver.find_element(By.NAME, "username").send_keys("max")
-        # driver.find_element(By.NAME, "password").send_keys("MaxP!2023")
-        # driver.find_element(By.CLASS_NAME, "submit-row").find_element(By.TAG_NAME, "input").click()
-        # time.sleep(2)
-        # # driver.find_element(By.CLASS_NAME, "model-state").find_elements(By.TAG_NAME, "th")[0].click()
-        # driver.find_element(By.XPATH, "//a[contains(.,'States')]").click()
-        # time.sleep(3)
-        # driver.find_element(By.XPATH, '//a[contains(.,"Add state")]').click()
-        # postal = "//input[@id='id_postal_name']"
-        # state = "//input[@id='id_name']"
-        # Select(driver.find_element(By.ID, "id_time_zone")).select_by_valu(str(randint(0, 5)))
-
-        for PN,  state in states_info.items():
-            print(PN, state[0], state[1])
-
-
-
-
-
-
-
+        for _ in range(100):
+            for PN, state_info in states_info.items():
+                driver.find_element(By.XPATH, postal).send_keys(PN)
+                driver.find_element(By.XPATH, state).send_keys(state_info[0])
+                Select(driver.find_element(By.ID, "id_time_zone")).select_by_visible_text(state_info[1])
+                time.sleep(5)
+                driver.find_element(By.NAME, "_save").click()
+                time.sleep(5)
+                driver.find_element(By.CLASS_NAME, "object-tools").find_element(By.CLASS_NAME, "addlink").click()
+                time.sleep(5)
 
     def tearDown(self):
         self.driver.quit()
