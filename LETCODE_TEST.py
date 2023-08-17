@@ -14,6 +14,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.alert import Alert
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+
+
 
 fake = Faker()
 
@@ -21,11 +26,18 @@ fake = Faker()
 class letcode_test(unittest.TestCase):
 
     def setUp(self):
-        opts = webdriver.FirefoxOptions()
-        opts.add_argument('--start-maximized')
-        opts.add_argument('--disable-extensions')
-        self.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+        # opts = webdriver.FirefoxOptions()
+        opts = webdriver.ChromeOptions()
+        # opts.add_argument('--start-maximized')
+        # opts.add_argument('--disable-extensions')
+        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=opts)
+        # self.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
         self.driver.maximize_window()
+        # opts = webdriver.FirefoxOptions()
+        # opts.add_argument('--start-maximized')
+        # opts.add_argument('--disable-extensions')
+        # self.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+        # self.driver.maximize_window()
 
     def test_Input_Field(self):
         driver = self.driver
@@ -115,10 +127,6 @@ class letcode_test(unittest.TestCase):
         # action.drag_and_drop_by_offset(drag_element, 180, 150)
         action.click_and_hold(drag_element).move_by_offset(180, 150).pause(3).release().perform()
 
-
-
-
-
         time.sleep(5)
 
     def test_dragg(self):
@@ -133,6 +141,27 @@ class letcode_test(unittest.TestCase):
         action.perform()
         time.sleep(10)
 
+    def test_calendar(self):
+        driver = self.driver
+        driver.get("https://letcode.in/calendar")
+        time.sleep(3)
+        driver.find_element(By.XPATH, "//input[contains(@class,'datetimepicker-dummy-input is-datetimepicker-range')]").click()
+        driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_element(By.CLASS_NAME, "is-today").click()
+        calendar = driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_element(By.CLASS_NAME, "is-today")
+        list_days = driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_element(By.CLASS_NAME, "date-pickerdate")
+        print(len(list_days))
+        # new_data = str(int(calendar.text)+3)
+        # print(new_data)
+        # idx = driver.find_elements(By.CLASS_NAME, "datepicker-days").index(calendar)
+        # print(idx)
+        # for elem in driver.find_elements(By.CLASS_NAME, "datepicker-days"):
+        #     print(elem.text, "==", new_data)
+        #     if elem.text == new_data:
+        #         elem.click()
+        #         print("click", elem.text)
+        #         break
+
+        time.sleep(5)
 
     def tearDown(self):
         self.driver.quit()
