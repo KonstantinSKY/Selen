@@ -148,19 +148,20 @@ class letcode_test(unittest.TestCase):
         driver.find_element(By.XPATH, "//input[contains(@class,'datetimepicker-dummy-input is-datetimepicker-range')]").click()
         driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_element(By.CLASS_NAME, "is-today").click()
         calendar = driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_element(By.CLASS_NAME, "is-today")
-        list_days = driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_element(By.CLASS_NAME, "date-pickerdate")
-        print(len(list_days))
-        # new_data = str(int(calendar.text)+3)
-        # print(new_data)
-        # idx = driver.find_elements(By.CLASS_NAME, "datepicker-days").index(calendar)
-        # print(idx)
-        # for elem in driver.find_elements(By.CLASS_NAME, "datepicker-days"):
-        #     print(elem.text, "==", new_data)
-        #     if elem.text == new_data:
-        #         elem.click()
-        #         print("click", elem.text)
-        #         break
-
+        list_days = driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_elements(By.TAG_NAME, "button")
+        print(len(list_days), calendar)
+        if calendar in list_days:
+            print("YES")
+        new_data = str(int(calendar.text)+3)
+        print(new_data)
+        for elem in list_days:
+            print(elem.text, "==", new_data)
+            if elem.text == new_data:
+                print(elem)
+                time.sleep(2)
+                elem.click()
+                time.sleep(10)
+                break
         time.sleep(5)
 
     def tearDown(self):
