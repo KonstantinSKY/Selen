@@ -18,8 +18,6 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
-
-
 fake = Faker()
 
 
@@ -145,14 +143,15 @@ class letcode_test(unittest.TestCase):
         driver = self.driver
         driver.get("https://letcode.in/calendar")
         time.sleep(3)
-        driver.find_element(By.XPATH, "//input[contains(@class,'datetimepicker-dummy-input is-datetimepicker-range')]").click()
+        driver.find_element(By.XPATH,
+                            "//input[contains(@class,'datetimepicker-dummy-input is-datetimepicker-range')]").click()
         driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_element(By.CLASS_NAME, "is-today").click()
         calendar = driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_element(By.CLASS_NAME, "is-today")
         list_days = driver.find_elements(By.CLASS_NAME, "datepicker-days")[1].find_elements(By.TAG_NAME, "button")
         print(len(list_days), calendar)
         if calendar in list_days:
             print("YES")
-        new_data = str(int(calendar.text)+3)
+        new_data = str(int(calendar.text) + 3)
         print(new_data)
         for elem in list_days:
             print(elem.text, "==", new_data)
@@ -163,6 +162,34 @@ class letcode_test(unittest.TestCase):
                 time.sleep(10)
                 break
         time.sleep(5)
+
+    def test_windows(self):
+        driver = self.driver
+        driver.get("https://letcode.in/windows")
+        time.sleep(1)
+        driver.find_element(By.ID, "home").click()
+        time.sleep(1)
+        print(driver.title)
+        try:
+            assert driver.title == "Table HTML Tag - JavaScript Created"
+            print("LetCode with Koushik:", driver.title)
+
+        except AssertionError:
+            print("Title is different. Current Title is:", driver.title)
+
+            driver.switch_to.window(driver.window_handles[-1])
+
+            driver.close()
+        driver.switch_to.window(driver.window_handles[0])
+        time.sleep(3)
+        driver.find_element(By.ID, "multi").click()
+        time.sleep(1)
+        handles = driver.window_handles
+
+        # Print the title of each window
+        for handle in handles:
+            driver.switch_to.window(handle)
+            print(driver.title)
 
     def tearDown(self):
         self.driver.quit()
