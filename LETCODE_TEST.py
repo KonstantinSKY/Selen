@@ -170,6 +170,7 @@ class letcode_test(unittest.TestCase):
         driver.find_element(By.ID, "home").click()
         time.sleep(1)
         print(driver.title)
+
         try:
             assert driver.title == "Table HTML Tag - JavaScript Created"
             print("LetCode with Koushik:", driver.title)
