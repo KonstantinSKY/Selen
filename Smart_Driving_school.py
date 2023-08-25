@@ -1,6 +1,6 @@
 import time
 from faker import Faker
-from random import randint
+
 from unittest import TestCase
 from selenium.webdriver import Keys
 from webdriver_manager.chrome import ChromeDriverManager
@@ -11,8 +11,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
+import random
 
 from selenium.webdriver.support import expected_conditions as EC
+import string
 
 fake = Faker()
 
@@ -242,44 +244,21 @@ class LetCodeTest(TestCase):
             "Celeste O'Neal", "Raphael D'Lorenzo", "Oceane D'Amico", "Lucas D'Arcy", "Chloe D'Souza"
         ]
 
-        positive_emails = [
-            "john.doe@example.com", "jane.smith@example.com", "alex.wilson@example.com",
-            "emily.jones@example.com", "michael.brown@example.com", "sarah.johnson@example.com",
-            "david.jackson@example.com", "olivia.miller@example.com", "james.davis@example.com",
-            "emma.anderson@example.com", "william.thomas@example.com", "ava.white@example.com",
-            "charles.robinson@example.com", "sophia.clark@example.com", "joseph.harris@example.com",
-            "mia.lewis@example.com", "george.lee@example.com", "abigail.hall@example.com",
-            "samuel.green@example.com", "isabella.turner@example.com", "ethan.carter@example.com",
-            "oliver.phillips@example.com", "ava.roberts@example.com", "amelia.baker@example.com",
-            "benjamin.walker@example.com", "emily.cook@example.com", "jacob.campbell@example.com",
-            "chloe.kelly@example.com", "mason.morgan@example.com", "sophia.james@example.com",
-            "daniel.hughes@example.com", "mia.price@example.com", "william.evans@example.com",
-            "olivia.richardson@example.com", "alexander.cooper@example.com", "ava.bell@example.com",
-            "michael.collins@example.com", "amelia.cook@example.com", "david.murphy@example.com",
-            "emma.bailey@example.com", "james.stewart@example.com", "isabella.brown@example.com",
-            "jackson.jenkins@example.com", "sophia.wood@example.com", "oliver.parker@example.com",
-            "mia.ward@example.com", "ethan.martin@example.com", "lily.harris@example.com",
-            "noah.mitchell@example.com", "ava.morris@example.com", "william.roberts@example.com",
-            "olivia.campbell@example.com", "daniel.phillips@example.com", "sophia.king@example.com",
-            "logan.anderson@example.com", "isabella.hall@example.com", "jackson.adams@example.com",
-            "amelia.wilson@example.com", "mason.stewart@example.com", "emma.edwards@example.com",
-            "liam.walker@example.com", "ava.turner@example.com", "noah.thomas@example.com",
-            "olivia.green@example.com", "logan.hughes@example.com", "sophia.robinson@example.com",
-            "jack.harris@example.com", "emma.clark@example.com", "lucas.carter@example.com",
-            "mia.cooper@example.com", "ethan.murphy@example.com", "ava.hughes@example.com",
-            "oliver.bennett@example.com", "isabella.moore@example.com", "noah.bailey@example.com",
-            "sophia.evans@example.com", "lucas.mitchell@example.com", "mia.martin@example.com",
-            "mason.king@example.com", "olivia.morris@example.com", "liam.roberts@example.com",
-            "sophia.johnson@example.com", "jacob.hall@example.com", "emma.lewis@example.com",
-            "ava.phillips@example.com", "oliver.williams@example.com", "mia.cook@example.com",
-            "jack.davis@example.com", "isabella.anderson@example.com", "noah.smith@example.com",
-            "sophia.miller@example.com", "lucas.jones@example.com", "olivia.harris@example.com",
-            "jacob.martin@example.com", "emma.moore@example.com", "mia.smith@example.com",
-            "oliver.wilson@example.com", "isabella.robinson@example.com", "jackson.miller@example.com",
-            "sophia.jackson@example.com", "jacob.brown@example.com", "ava.white@example.com",
-            "oliver.jones@example.com", "mia.morris@example.com", "lucas.cooper@example.com",
-            "sophia.evans@example.com", "noah.anderson@example.com", "emma.mitchell@example.com"
-        ]
+        def generate_positive_email():  # random email for positive email
+            letters_and_digits = string.ascii_letters + string.digits
+            local_part_length = random.randint(1, 10)
+            local_part = ''.join(random.choice(letters_and_digits) for _ in range(local_part_length))
+            domain_part_length = random.randint(1, 10)
+            domain_part = ''.join(random.choice(letters_and_digits) for _ in range(domain_part_length))
+            tld = random.choice(["com", "net", "org"])
+
+            return f"{local_part}@{domain_part}.{tld}"
+
+        positive_emails = [generate_positive_email() for _ in range(100)]
+
+        for email in positive_emails:
+            print(email)
+
         for i in range(10):
             f_name = driver.find_element(By.ID, "id_first_name")
             l_name = driver.find_element(By.ID, "id_last_name")
@@ -304,9 +283,10 @@ class LetCodeTest(TestCase):
             time.sleep(2)
 
         time.sleep(2)
+
     def test_neg_reg(self):
         driver = self.driver
-        driver.get("http://99.153.249.66/")
+        driver.get("http://99.153.249.66/register/")
         time.sleep(1)
         driver.find_elements(By.CLASS_NAME, "btn-outline-warning")[1].click()
 
@@ -332,39 +312,22 @@ class LetCodeTest(TestCase):
             "Mathilde D'Amico", "Victor D'Souza", "Leonie D'Costa", "Noe O'Neal", "Maelle O'Leary",
             "Theo O'Dwyer", "Leon D'Lorenzo", "Juliette D'Angelo", "Jules O'Connell", "Lea O'Neal",
             "Maxime O'Dwyer", "Hugo D'Amore", "Lou D'Souza", "Manon D'Costa", "Leo O'Connell",
-            "Celeste O'Neal", "Raphael D'Lorenzo", "Oceane D'Amico", "Lucas D'Arcy", "Chloe D'Souza" ]
+            "Celeste O'Neal", "Raphael D'Lorenzo", "Oceane D'Amico", "Lucas D'Arcy", "Chloe D'Souza"]
 
-        negative_emails = [
-            "john.doe", "jane.smith@example", "alex.wilson@", "@example.com",
-            "michael.brown@example.c", "sarah.johnson@example..com", "david.jackson@.com",
-            "olivia.miller@example", "james.davis@", "emma.anderson", "william.thomas",
-            "charles.robinson", "sophia.clark", "joseph.harris@", "mia.lewis",
-            "george.lee@", "abigail.hall", "@example.com", "samuel.green@example",
-            "isabella.turner@", "ethan.carter", "oliver.phillips", "ava.roberts",
-            "amelia.baker@", "benjamin.walker", "emily.cook", "jacob.campbell",
-            "chloe.kelly@", "mason.morgan", "sophia.james", "daniel.hughes",
-            "mia.price@", "william.evans", "olivia.richardson", "alexander.cooper",
-            "ava.bell@", "michael.collins", "amelia.cook", "david.murphy",
-            "emma.bailey@", "james.stewart", "isabella.brown", "jackson.jenkins",
-            "sophia.wood@", "oliver.parker", "mia.ward", "ethan.martin",
-            "lily.harris@", "noah.mitchell", "ava.morris", "william.roberts",
-            "olivia.campbell@", "daniel.phillips", "sophia.king", "logan.anderson",
-            "isabella.hall@", "jackson.adams", "amelia.wilson", "mason.stewart",
-            "emma.edwards@", "liam.walker", "ava.turner", "noah.thomas",
-            "olivia.green@", "logan.hughes", "sophia.robinson", "jack.harris",
-            "emma.clark@", "lucas.carter", "mia.cooper", "ethan.murphy",
-            "ava.hughes@", "oliver.bennett", "isabella.moore", "noah.bailey",
-            "sophia.evans@", "lucas.mitchell", "mia.martin", "mason.king",
-            "olivia.morris@", "liam.roberts", "sophia.johnson", "jacob.hall",
-            "emma.lewis@", "ava.phillips", "oliver.williams", "mia.cook",
-            "jack.davis@", "isabella.anderson", "noah.smith", "sophia.miller",
-            "lucas.jones@", "olivia.harris", "jacob.martin", "emma.moore",
-            "mia.smith@", "oliver.wilson", "isabella.robinson", "jackson.miller",
-            "sophia.jackson@", "jacob.brown", "ava.white", "oliver.jones",
-            "mia.morris@", "lucas.cooper", "sophia.evans", "noah.anderson",
-            "emma.mitchell@"]
+        def generate_random_email():
+            symbols = string.ascii_letters + string.digits + "!#$%&'*+-/=?^_`{|}~."
+            local_part_length = random.randint(1, 20)
+            local_part = ''.join(random.choice(symbols) for _ in range(local_part_length))
+            domain_part_length = random.randint(1, 20)
+            domain_part = ''.join(random.choice(symbols) for _ in range(domain_part_length))
+            tld = random.choice(["com", "net", "org"])
 
+            return f"{local_part}@{domain_part}.{tld}"
 
+        negative_emails = [generate_random_email() for _ in range(100)]
+
+        for email in negative_emails:
+            print(email)
 
         for i in range(10):
             f_name = driver.find_element(By.ID, "id_first_name")
@@ -386,14 +349,106 @@ class LetCodeTest(TestCase):
             email.send_keys(random_email)
             register_button.click()
             time.sleep(1)
-            invalid_email = driver.find_element(By.CLASS_NAME, "invalid-feedback").text
-
+            invalid_email = driver.find_elements(By.CLASS_NAME, "invalid-feedback")[2].text
 
             if invalid_email == "Enter a valid email address.":
-                print("Negative test Pass with incorecct email:" ,random_email )
+                print("Negative test Pass with incorecct email:", random_email)
             else:
                 print("Negative Email is Fail with invalid email:", random_email)
 
+    def test_fill_form_fixture(self):
+        driver = self.driver
+        driver.get("http://99.153.249.66/register/")
+        time.sleep(1)
+
+        fixture_data = [
+            {
+                "first_name": "John",
+                "last_name": "Doe",
+                "email": "john.doe@example.com",
+                "password": "P@ssw0rd!1"
+            },
+            {
+                "first_name": "Jane",
+                "last_name": "Smith",
+                "email": "jane.smith@example.com",
+                "password": "Uncommon#Pass2"
+            },
+            {
+                "first_name": "Alex",
+                "last_name": "Wilson",
+                "email": "alex.wilson@example.com",
+                "password": "SecurePwd$3"
+            },
+            {
+                "first_name": "Emily",
+                "last_name": "Brown",
+                "email": "emily.brown@example.com",
+                "password": "MyP@ssw0rd4"
+            },
+            {
+                "first_name": "Daniel",
+                "last_name": "Johnson",
+                "email": "daniel.johnson@example.com",
+                "password": "12345!Pass"
+            },
+            {
+                "first_name": "Olivia",
+                "last_name": "Martinez",
+                "email": "olivia.martinez@example.com",
+                "password": "Qwerty123$"
+            },
+            {
+                "first_name": "Liam",
+                "last_name": "Davis",
+                "email": "liam.davis@example.com",
+                "password": "Pa$$w0rd678"
+            },
+            {
+                "first_name": "Sophia",
+                "last_name": "Miller",
+                "email": "sophia.miller@example.com",
+                "password": "SecurePwd#9"
+            },
+            {
+                "first_name": "Noah",
+                "last_name": "Garcia",
+                "email": "noah.garcia@example.com",
+                "password": "Uncommon@Pass10"
+            },
+            {
+                "first_name": "Ava",
+                "last_name": "Rodriguez",
+                "email": "ava.rodriguez@example.com",
+                "password": "P@ssw0rd!11"
+            },
+            # Add more items as needed...
+        ]
+        for item in fixture_data:
+            driver.get("http://99.153.249.66/register/")
+            time.sleep(1)
+            f_name = driver.find_element(By.ID, "id_first_name")
+            l_name = driver.find_element(By.ID, "id_last_name")
+            email = driver.find_element(By.ID, "id_email")
+            password = driver.find_element(By.ID, "id_password1")
+            conf_pass = driver.find_element(By.ID, "id_password2")
+            register_button = driver.find_elements(By.CLASS_NAME, "waves-light")[-1]
+
+            f_name.send_keys(item["first_name"])
+            l_name.send_keys(item["last_name"])
+            password.send_keys(item["password"])
+            conf_pass.send_keys(item["password"])
+            email.send_keys(item["email"])
+            register_button.click()
+            # Accessing the data from the fixture
+        # for item in fixture_data:
+        #     print("First Name:", item["first_name"])
+        #     print("Last Name:", item["last_name"])
+        #     print("Email:", item["email"])
+        #     print("Password:", item["password"])
+        #     print("-----------------------")
+
+        time.sleep(1)
 
     def tearDown(self):
         self.driver.quit()
