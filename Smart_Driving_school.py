@@ -84,10 +84,10 @@ class LetCodeTest(TestCase):
             element.send_keys(data)
             time.sleep(1)
         time.sleep(2)
-        Select(driver.find_element(By.ID, "id_sex")).select_by_value(str(randint(0, 2)))
+        Select(driver.find_element(By.ID, "id_sex")).select_by_value(str(random.randint(0, 2)))
         time.sleep(2)
-        Select(driver.find_element(By.ID, "id_ID_state")).select_by_value(str(randint(7, 15)))
-        Select(driver.find_element(By.NAME, "state")).select_by_value(str(randint(7, 15)))
+        Select(driver.find_element(By.ID, "id_ID_state")).select_by_value(str(random.randint(7, 15)))
+        Select(driver.find_element(By.NAME, "state")).select_by_value(str(random.randint(7, 15)))
 
         driver.find_element(By.NAME, "_save").click()
         time.sleep(5)
@@ -119,7 +119,7 @@ class LetCodeTest(TestCase):
             element.send_keys(data)
             time.sleep(1)
 
-        Select(driver.find_element(By.ID, "id_time_zone")).select_by_value(str(randint(0, 5)))
+        Select(driver.find_element(By.ID, "id_time_zone")).select_by_value(str(random.randint(0, 5)))
         driver.find_element(By.NAME, "_save").click()
         time.sleep(5)
         driver.find_element(By.XPATH, '//a[contains(.,"Add state")]').click()
@@ -200,7 +200,7 @@ class LetCodeTest(TestCase):
         time.sleep(5)
         postal = "//input[@id='id_postal_name']"
         state = "//input[@id='id_name']"
-        Select(driver.find_element(By.ID, "id_time_zone")).select_by_value(str(randint(0, 5)))
+        Select(driver.find_element(By.ID, "id_time_zone")).select_by_value(str(random.randint(0, 5)))
 
         for _ in range(100):
             for PN, state_info in states_info.items():
@@ -320,14 +320,11 @@ class LetCodeTest(TestCase):
             local_part = ''.join(random.choice(symbols) for _ in range(local_part_length))
             domain_part_length = random.randint(1, 20)
             domain_part = ''.join(random.choice(symbols) for _ in range(domain_part_length))
-            tld = random.choice(["com", "net", "org"])
+            tld = random.choice(["com", "net", "org", "c", "comm", "_comm", "---", "..com", "...com"])
 
             return f"{local_part}@{domain_part}.{tld}"
 
         negative_emails = [generate_random_email() for _ in range(100)]
-
-        for email in negative_emails:
-            print(email)
 
         for i in range(10):
             f_name = driver.find_element(By.ID, "id_first_name")
@@ -449,6 +446,50 @@ class LetCodeTest(TestCase):
         #     print("-----------------------")
 
         time.sleep(1)
+
+    def test_neg_names(self):
+        driver = self.driver
+        driver.get("http://99.153.249.66/register/")
+        time.sleep(1)
+
+        def generate_negative_name(length=8):
+            symbols = '!@#$%^&*()_-+=<>?'
+            numbers = '0123456789'
+            letters = string.ascii_letters
+            characters = letters + symbols + numbers
+            negative_name = ''.join(random.choice(characters) for _ in range(length))
+            return negative_name
+
+        for i in range(20):
+            neg_first = driver.find_element(By.ID, "id_first_name")
+            neg_last = driver.find_element(By.ID, "id_last_name")
+
+            generated_name = generate_negative_name()
+
+            neg_first.send_keys(generated_name)
+            neg_last.send_keys(generated_name)
+            driver.find_elements(By.CLASS_NAME, "waves-light")[-1].click()
+            time.sleep(1)
+
+            invalid_first = driver.find_elements(By.CLASS_NAME, "invalid-feedback")[0].text
+
+            invalid_last = driver.find_elements(By.CLASS_NAME, "invalid-feedback")[1].text
+
+            expected_error_message1 = "Only English alphabet letters, spaces, single dots, single dashes, and single " \
+                                      "apostrophes are allowed."
+            if invalid_first == expected_error_message1:
+                print("Negative test Pass with incorrect first name:", generated_name)
+            else:
+                print("Negative test Fail with invalid first name:", generated_name)
+            expected_error_message2 = "This field is required."
+            if invalid_last == expected_error_message1:
+                print("Negative test Pass with incorrect first name:", generated_name)
+            else:
+                print("Negative test Fail with invalid first name:", generated_name)
+            driver.get("http://99.153.249.66/register/")
+            time.sleep(1)
+
+        time.sleep(2)
 
     def tearDown(self):
         self.driver.quit()
