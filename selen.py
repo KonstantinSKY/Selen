@@ -121,8 +121,8 @@ class Selen:
     class Out_str(str):
 
         def __init__(self, txt):
-            self.txt = txt
-            print("WTF444")
+            # self.txt = txt
+            # print("WTF444")
 
         def out(self, message=''):
             print(message, self.txt)
