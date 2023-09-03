@@ -121,6 +121,7 @@ class Selen:
     class Out_str(str):
 
         def __init__(self, txt):
+            pass
             # self.txt = txt
             # print("WTF444")
 
@@ -830,6 +831,8 @@ class Selen:
 
 
 if __name__ == '__main__':
+    obj = Selen()
+    obj.WD.get('https://google.com')
     print("Selen - amazing add-on for selenium framework.")
     print("Version:", __VERSION)
     print("https://github.com/KonstantinSKY/Selen")
